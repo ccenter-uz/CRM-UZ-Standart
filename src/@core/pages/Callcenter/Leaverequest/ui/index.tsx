@@ -23,20 +23,15 @@ import {
   responseList,
   selectStyle,
 } from "../model/helper";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useGlobal } from "@/@core/application/store/global";
-import {
-  getItemById,
-  postChangeRazdel,
-  create,
-  createDraft,
-  edit,
-  editDraft,
-} from "../api";
+import { getItemById, create, createDraft, edit, editDraft } from "../api";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
+import ReactInputMask from "react-input-mask";
+import Cookies from "js-cookie";
 
 export const Leaverequest = () => {
   const params = useSearchParams();
@@ -56,16 +51,16 @@ export const Leaverequest = () => {
     },
   ];
   const {
-    razdel,
     podrazdel,
-    setPodrazdel,
-    getPodrazdel,
     regions,
     district,
     getDistrictByRegionId,
     setDistrict,
     getDistrict,
     organizations,
+    getOrganizations,
+    getPodrazdel,
+    getRegions,
   } = useGlobal();
   const {
     register,
@@ -76,6 +71,7 @@ export const Leaverequest = () => {
   } = useForm();
   const router = useRouter();
   const [data, setData] = useState<any>([]);
+  const role = Cookies.get("role");
 
   // BTNS
   const handleButtons = useCallback(() => {
@@ -220,6 +216,18 @@ export const Leaverequest = () => {
     }
   };
 
+  // get-all-data
+  useEffect(() => {
+    Promise.all([
+      getPodrazdel(),
+      getRegions(),
+      getDistrict(),
+      getOrganizations({ page: 1, pageSize: 100000, search: "null" }),
+    ]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (params.get("edit")) {
       getItemById(params.get("edit") || "").then((res) => {
@@ -289,23 +297,6 @@ export const Leaverequest = () => {
         </Text>
         <Box p={{ base: "5px", sm: "5px", md: "16px", xl: " 16px" }}>
           <form id="application-form">
-            <FormControl isInvalid={!!errors.incoming_number}>
-              <FormLabel htmlFor="incoming_number" sx={labelStyle}>
-                Кирувчи рақам
-              </FormLabel>
-              <Input
-                sx={inputStyle}
-                id="incoming_number"
-                type="text"
-                {...register("incoming_number", { required: true })}
-              />
-              <FormErrorMessage
-                color={"red.300"}
-                fontSize={scssVariables.fonts.span}
-              >
-                мажбурий катак
-              </FormErrorMessage>
-            </FormControl>
             <FormControl isInvalid={!!errors.region}>
               <FormLabel htmlFor="region" sx={labelStyle}>
                 Вилоят
@@ -402,11 +393,20 @@ export const Leaverequest = () => {
               <FormLabel htmlFor="phone" sx={labelStyle}>
                 Телефон рақам
               </FormLabel>
-              <Input
-                sx={inputStyle}
-                id="phone"
-                type="number"
-                {...register("phone")}
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    sx={inputStyle}
+                    as={ReactInputMask}
+                    mask="+(999)99 999-99-99"
+                    maskChar=""
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="+(999)99 999-99-99"
+                  />
+                )}
               />
             </FormControl>
             <FormControl>
@@ -429,7 +429,6 @@ export const Leaverequest = () => {
                 ))}
               </Select>
             </FormControl>
-
             <FormControl isInvalid={!!errors.sub_category_id}>
               <FormLabel htmlFor="sub_category_id" sx={labelStyle}>
                 Тасниф
@@ -490,46 +489,56 @@ export const Leaverequest = () => {
                 {...register("performer")}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="perform_date" sx={labelStyle}>
-                Ижро қилинган сана
-              </FormLabel>
-              <Input
-                sx={inputStyle}
-                id="perform_date"
-                type="date"
-                {...register("perform_date")}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="sended_to_organizations" sx={labelStyle}>
-                Тегишли идораларга юборилган
-              </FormLabel>
-              <AutocompleteSelect
-                name="sended_to_organizations"
-                control={control}
-                options={[
-                  { value: "null", label: "Барчаси" },
-                  ...organizations?.map((dist: any) => ({
-                    value: dist.id,
-                    label: dist.title[0].toUpperCase() + dist.title.slice(1),
-                  })),
-                ]}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="response" sx={labelStyle}>
-                Мурожаатни жавоби
-              </FormLabel>
-              <Select sx={selectStyle} id="response" {...register("response")}>
-                <option value={"null"}>Танланг</option>
-                {responseList.map((response) => (
-                  <option key={response.id} value={response.label}>
-                    {response.label}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
+            {role === "admin" && (
+              <FormControl>
+                <FormLabel htmlFor="perform_date" sx={labelStyle}>
+                  Ижро қилинган сана
+                </FormLabel>
+                <Input
+                  sx={inputStyle}
+                  id="perform_date"
+                  type="date"
+                  {...register("perform_date")}
+                />
+              </FormControl>
+            )}
+            {role === "admin" && (
+              <FormControl>
+                <FormLabel htmlFor="sended_to_organizations" sx={labelStyle}>
+                  Тегишли идораларга юборилган
+                </FormLabel>
+                <AutocompleteSelect
+                  name="sended_to_organizations"
+                  control={control}
+                  options={[
+                    { value: "null", label: "Барчаси" },
+                    ...organizations?.map((dist: any) => ({
+                      value: dist.id,
+                      label: dist.title[0].toUpperCase() + dist.title.slice(1),
+                    })),
+                  ]}
+                />
+              </FormControl>
+            )}
+            {role === "admin" && (
+              <FormControl>
+                <FormLabel htmlFor="response" sx={labelStyle}>
+                  Мурожаатни жавоби
+                </FormLabel>
+                <Select
+                  sx={selectStyle}
+                  id="response"
+                  {...register("response")}
+                >
+                  <option value={"null"}>Танланг</option>
+                  {responseList.map((response) => (
+                    <option key={response.id} value={response.label}>
+                      {response.label}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
           </form>
         </Box>
       </PaperContent>

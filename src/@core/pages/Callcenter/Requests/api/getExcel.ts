@@ -1,6 +1,5 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { api } from "@/@core/application/utils/api";
 
 export const getcallcenterforExcel = async (columns: any, data: any) => {
   try {

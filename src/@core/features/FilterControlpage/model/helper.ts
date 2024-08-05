@@ -1,12 +1,6 @@
 import { scssVariables } from "@/@core/application/utils/vars";
 
-// STYLES
-export const labelStyle = {
-  color: scssVariables.textGreyColor,
-  fontSize: scssVariables.fonts.span,
-  fontWeight: 400,
-  marginTop: { base: "8px", sm: "8px", md: "16px", xl: "16px" },
-};
+
 
 export const inputStyle = {
   color: scssVariables.textGreyColor,

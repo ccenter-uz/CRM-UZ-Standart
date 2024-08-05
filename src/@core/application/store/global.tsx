@@ -140,30 +140,6 @@ export const useGlobal = () => {
   const role = useGlobalStore((state: any) => state.role);
   const setRole = useGlobalStore((state: any) => state.setRole);
 
-  const getAll = async () => {
-    if (
-      razdel.length > 0 &&
-      podrazdel.length > 0 &&
-      regions.length > 0 &&
-      district.length > 0 &&
-      organizations.length > 0
-    )
-      return null;
-
-    return Promise.all([
-      getRazdel(),
-      getPodrazdel(),
-      getRegions(),
-      getDistrict(),
-      getOrganizations({ page: 1, pageSize: 100000, search: "null" }),
-    ]);
-  };
-
-  useEffect(() => {
-    getAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return {
     razdel,
     loading,
@@ -178,7 +154,6 @@ export const useGlobal = () => {
     getDistrictByRegionId,
     getDistrict,
     setDistrict,
-    getAll,
     getOperators,
     organizations,
     getOrganizations,

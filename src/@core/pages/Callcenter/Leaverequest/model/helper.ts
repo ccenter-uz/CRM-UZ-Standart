@@ -51,65 +51,7 @@ export const buttonStyle = {
   color: "whitesmoke",
 };
 
-// LISTS
-export const regionList = [
-  {
-    id: 1,
-    label: "Toshkent shahar",
-  },
-  {
-    id: 2,
-    label: "Toshkent viloyati",
-  },
-  {
-    id: 3,
-    label: "Namangan viloyati",
-  },
-  {
-    id: 4,
-    label: "Andijon viloyati",
-  },
-  {
-    id: 5,
-    label: "Sirdaryo viloyati",
-  },
-  {
-    id: 6,
-    label: "Qoraqalpogiston respublikasi",
-  },
-  {
-    id: 7,
-    label: "Farg‘ona viloyati",
-  },
-  {
-    id: 8,
-    label: "Xorazm viloyati",
-  },
-  {
-    id: 9,
-    label: "Jizzax viloyati",
-  },
-  {
-    id: 10,
-    label: "Surxondaryo viloyati",
-  },
-  {
-    id: 11,
-    label: "Navoiy viloyati",
-  },
-  {
-    id: 12,
-    label: "Buxoro viloyati",
-  },
-  {
-    id: 13,
-    label: "Samarqand viloyati",
-  },
-  {
-    id: 14,
-    label: "Qashqadaryo viloyati",
-  },
-];
+
 export const organizationTypeList = [
   {
     id: 1,

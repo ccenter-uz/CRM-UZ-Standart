@@ -5,16 +5,22 @@ import { useParams, useRouter } from "next/navigation";
 import { Box, Button, Divider, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { PaperContent } from "@/@core/shared/ui/PaperContent";
 import BreadCrumb from "@/@core/shared/ui/Breadcrumb";
-import { PenTool } from "react-feather";
+import { Download, PenTool } from "react-feather";
 import { scssVariables } from "@/@core/application/utils/vars";
 import { EditHistorydrawer } from "./EditHistoryDrawer";
 import { useDisclosure } from "@/@core/shared/hook/useDisclosure";
+import { PDFView } from "./PDFView";
 
 export const Itempage: FC = () => {
   const query = useParams();
   const router = useRouter();
   const { data, getData } = useItemPage();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isPdfOpen,
+    onClose: pdfClose,
+    onOpen: pdfOpen,
+  } = useDisclosure();
   const breadcrumb = [
     {
       id: 1,
@@ -49,6 +55,39 @@ export const Itempage: FC = () => {
       p={{ base: "5px 10px", sm: "5px 10px", md: "8px 16px", xl: "8px 16px" }}
     >
       <BreadCrumb item={breadcrumb} />
+      <Flex
+        align={"center"}
+        gap={"10px"}
+        justify={"flex-end"}
+        flexWrap={"wrap"}
+      >
+        <Button
+          h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
+          leftIcon={<Download width={"16px"} height={"16px"} />}
+          fontSize={scssVariables.fonts.parag}
+          onClick={pdfOpen}
+          fontWeight={400}
+          variant={"outline"}
+          color={"orange.400"}
+          borderColor={"orange.400"}
+          _hover={{ bg: "orange.400", color: "white" }}
+        >
+          PDF юклаш
+        </Button>
+        <Button
+          h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
+          leftIcon={<PenTool width={"16px"} height={"16px"} />}
+          fontSize={scssVariables.fonts.parag}
+          onClick={onOpen}
+          fontWeight={400}
+          variant={"outline"}
+          color={"green.400"}
+          borderColor={"green.400"}
+          _hover={{ bg: "green.400", color: "white" }}
+        >
+          Ўзгартириш тарихи
+        </Button>
+      </Flex>
       <PaperContent>
         <Flex
           align={"center"}
@@ -59,19 +98,6 @@ export const Itempage: FC = () => {
           <Text color={scssVariables.textGreyColor} fontWeight={500}>
             Хужжат: № {data[0]?.incoming_number}
           </Text>
-          <Button
-            h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
-            leftIcon={<PenTool width={"16px"} height={"16px"} />}
-            fontSize={scssVariables.fonts.parag}
-            onClick={onOpen}
-            fontWeight={400}
-            variant={"outline"}
-            color={"green.400"}
-            borderColor={"green.400"}
-            _hover={{ bg: "green.400", color: "white" }}
-          >
-            Ўзгартириш тарихи
-          </Button>
         </Flex>
         <Divider my={"16px"} borderColor={"lightgrey"} />
         {data[0]?.IsDraf === "true" && (
@@ -367,6 +393,10 @@ export const Itempage: FC = () => {
       </PaperContent>
       {/* Drawer */}
       <EditHistorydrawer isOpen={isOpen} onClose={onClose} />
+
+      {/* PDFViewer */}
+
+      <PDFView isOpen={isPdfOpen} onClose={pdfClose} data={data} />
     </Box>
   );
 };
