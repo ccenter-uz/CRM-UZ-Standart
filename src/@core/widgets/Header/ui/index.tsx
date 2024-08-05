@@ -3,7 +3,6 @@ import { scssVariables } from "@/@core/application/utils/vars";
 import {
   Box,
   Button,
-  Icon,
   Input,
   InputGroup,
   InputRightElement,

@@ -10,10 +10,10 @@ import { ChangeEvent, FC, useEffect } from "react";
 import { useGlobal } from "@/@core/application/store/global";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRequest } from "../model/Slicer";
-import { postChangeRazdel } from "../api";
 import { getcallcenterforExcel } from "../api/getExcel";
 import { FilterTable } from "@/@core/features/FilterTable";
 import { callcenterColumns } from "@/@core/application/helper/callCenterColumns";
+import { globalVars } from "@/@core/shared/types";
 
 export const Drafts: FC = () => {
   const breadcrumb = [
@@ -35,12 +35,13 @@ export const Drafts: FC = () => {
   const { current, pageSize, total, setTotal } = usePagination();
 
   const {
-    setPodrazdel,
-    getPodrazdel,
+    getOrganizations,
     getDistrictByRegionId,
     setDistrict,
     getDistrict,
     getOperators,
+    getPodrazdel,
+    getRegions,
   } = useGlobal();
   const { data, GET } = useRequest();
 
@@ -73,65 +74,89 @@ export const Drafts: FC = () => {
     res.status === 200 && setTotal(res?.data?.pagination?.totalItems);
   };
 
+  // get-all-data
   useEffect(() => {
     Promise.all([
-      getData(),
+      getPodrazdel(),
+      getRegions(),
+      getDistrict(),
+      getOrganizations({ page: 1, pageSize: 100000, search: "null" }),
       getOperators({
         page: 1,
         pageSize: 1000000,
         search: "null",
         role: "operator",
       }),
-    ]).then(() => {});
+    ]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    Promise.all([getData()]).then(() => {});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
   // FINISH
   const handleFinish = (values: any) => {
-    const query = `?page=1&pageSize=${pageSize}&operators=${
-      values.operators || "null"
-    }&applicant=${values.applicant || "null"}&response=${
-      values.response || "null"
-    }&income_number=${values.income_number || "null"}&region=${
+    const query = `?${globalVars.page}=1&${globalVars.pageSize}=${pageSize}&${
+      globalVars.operators
+    }=${values.operators || "null"}&${globalVars.applicant}=${
+      values.applicant || "null"
+    }&${globalVars.response}=${values.response || "null"}&${
+      globalVars.income_number
+    }=${values.income_number || "null"}&${globalVars.region}=${
       values.region || "null"
-    }&district=${values.district || "null"}&subCategoryId=${
-      values.subCategoryId || "null"
-    }&date_from=${values.date_from || "null"}&date_to=${
-      values.date_to || "null"
-    }`;
+    }&${globalVars.district}=${values.district || "null"}&${
+      globalVars.subCategoryId
+    }=${values.subCategoryId || "null"}&${globalVars.date_from}=${
+      values.date_from || "null"
+    }&${globalVars.date_to}=${values.date_to || "null"}`;
 
     router.push(query);
   };
   // PAGINATION
   const handlePageChange = (page: number) => {
     router.push(
-      `?page=${page}&pageSize=${pageSize}&operators=${params.get(
-        "operators"
-      )}&applicant=${params.get("applicant") || "null"}&response=${params.get(
-        "response"
-      )}&income_number=${params.get("income_number") || "null"}&region=${
-        params.get("region") || "null"
-      }&district=${params.get("district") || "null"}&subCategoryId=${
-        params.get("subCategoryId") || "null"
-      }&date_from=${params.get("date_from") || "null"}&date_to=${
-        params.get("date_to") || "null"
-      }`
+      `?${page}=1&${globalVars.pageSize}=${pageSize}&${
+        globalVars.operators
+      }=${params.get(`${globalVars.operators}`)}&${globalVars.applicant}=${
+        params.get(`${globalVars.applicant}`) || "null"
+      }&${globalVars.response}=${params.get(`${globalVars.response}`)}&${
+        globalVars.income_number
+      }=${params.get(`${globalVars.income_number}`) || "null"}&${
+        globalVars.region
+      }=${params.get(`${globalVars.region}`) || "null"}&${
+        globalVars.district
+      }=${params.get(`${globalVars.district}`) || "null"}&${
+        globalVars.subCategoryId
+      }=${params.get(`${globalVars.subCategoryId}`) || "null"}&${
+        globalVars.date_from
+      }=${params.get(`${globalVars.date_from}`) || "null"}&${
+        globalVars.date_to
+      }=${params.get(`${globalVars.date_to}`) || "null"}`
     );
   };
   const handlePageSizeChange = (pageSize: number) => {
     router.push(
-      `?page=1&pageSize=${pageSize}&operators=${params.get(
-        "operators"
-      )}&applicant=${params.get("applicant") || "null"}&response=${params.get(
-        "response"
-      )}&income_number=${params.get("income_number") || "null"}&region=${
-        params.get("region") || "null"
-      }&district=${params.get("district") || "null"}&subCategoryId=${
-        params.get("subCategoryId") || "null"
-      }&date_from=${params.get("date_from") || "null"}&date_to=${
-        params.get("date_to") || "null"
-      }`
+      `?${globalVars.page}=1&${globalVars.pageSize}=${pageSize}&${
+        globalVars.operators
+      }=${params.get(`${globalVars.operators}`)}&${globalVars.applicant}=${
+        params.get(`${globalVars.applicant}`) || "null"
+      }&${globalVars.response}=${params.get(`${globalVars.response}`)}&${
+        globalVars.income_number
+      }=${params.get(`${globalVars.income_number}`) || "null"}&${
+        globalVars.region
+      }=${params.get(`${globalVars.region}`) || "null"}&${
+        globalVars.district
+      }=${params.get(`${globalVars.district}`) || "null"}&${
+        globalVars.subCategoryId
+      }=${params.get(`${globalVars.subCategoryId}`) || "null"}&${
+        globalVars.date_from
+      }=${params.get(`${globalVars.date_from}`) || "null"}&${
+        globalVars.date_to
+      }=${params.get(`${globalVars.date_to}`) || "null"}`
     );
   };
 

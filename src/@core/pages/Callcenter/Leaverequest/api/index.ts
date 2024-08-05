@@ -43,22 +43,7 @@ export const editDraft = async (body: any, id: string) => {
   }
 };
 
-// GET-RAZDEL
-export const postChangeRazdel = async (id: number | string) => {
-  try {
-    const response = await api.get(`/SectionCategories/one/${id}`, {
-      params: {
-        page: 1,
-        pageSize: 1000000,
-        search: "null",
-      },
-    });
 
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 // GET-EDITED-ONE
 export const getItemById = async (id: number | string) => {

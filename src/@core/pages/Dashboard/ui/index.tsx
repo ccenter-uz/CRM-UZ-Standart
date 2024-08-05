@@ -22,7 +22,15 @@ import { buttonStyle, Dashboardcolumns, labelStyle } from "../model/helper";
 import { useGlobal } from "@/@core/application/store/global";
 import BreadCrumb from "@/@core/shared/ui/Breadcrumb";
 import { scssVariables } from "@/@core/application/utils/vars";
-import { Eye, EyeOff, Search, X } from "react-feather";
+import {
+  CheckCircle,
+  Clipboard,
+  Eye,
+  EyeOff,
+  Key,
+  Search,
+  X,
+} from "react-feather";
 import TableGen from "@/@core/shared/ui/Table";
 import Pagination from "@/@core/shared/ui/Pagination";
 import { usePagination } from "@/@core/shared/hook/usePaginate";
@@ -32,7 +40,6 @@ import {
   getDataWithRegion,
   getLineGraph,
   getTableData,
-  postChangeRazdel,
 } from "../api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDashboardSlicer } from "../model/Slicer";
@@ -40,6 +47,7 @@ import { BarChart } from "./BarChart";
 import { LineChart } from "./LineGraph";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
+import { globalVars } from "@/@core/shared/types";
 
 export const Dashboard: FC<any> = (props) => {
   const breadcrumbs = [
@@ -55,20 +63,12 @@ export const Dashboard: FC<any> = (props) => {
   const params = useSearchParams();
   const router = useRouter();
   const { current, pageSize, total, setTotal } = usePagination();
-  const { razdel, regions, podrazdel, getPodrazdel, setPodrazdel } =
-    useGlobal();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    control,
-  } = useForm();
+  const { regions, podrazdel, getPodrazdel, getRegions } = useGlobal();
+  const { handleSubmit, reset, control } = useForm();
   const {
     register: register1,
     handleSubmit: handleSubmit1,
     reset: reset1,
-    formState: { errors: errors1 },
   } = useForm();
   const { id, dataWithRegion, setDataWithRegion, tableData, setTableData } =
     useDashboardSlicer();
@@ -93,10 +93,10 @@ export const Dashboard: FC<any> = (props) => {
     const errorCase = ["null", "", null];
     if (
       !errorCase.includes(params.get("date_from")) &&
-      !errorCase.includes(params.get("date_to"))
+      !errorCase.includes(params.get(`${globalVars.date_to}`))
     ) {
       let date_from = new Date(params.get("date_from") || "");
-      let date_to = new Date(params.get("date_to") || "");
+      let date_to = new Date(params.get(`${globalVars.date_to}`) || "");
       query = {
         date_from: Intl.DateTimeFormat("ru-RU").format(date_from),
         date_to: Intl.DateTimeFormat("ru-RU").format(date_to),
@@ -117,10 +117,10 @@ export const Dashboard: FC<any> = (props) => {
     const errorCase = ["null", "", null];
     if (
       !errorCase.includes(params.get("date_from")) &&
-      !errorCase.includes(params.get("date_to"))
+      !errorCase.includes(params.get(`${globalVars.date_to}`))
     ) {
       let date_from = new Date(params.get("date_from") || "");
-      let date_to = new Date(params.get("date_to") || "");
+      let date_to = new Date(params.get(`${globalVars.date_to}`) || "");
       query = {
         date_from: Intl.DateTimeFormat("ru-RU").format(date_from),
         date_to: Intl.DateTimeFormat("ru-RU").format(date_to),
@@ -140,7 +140,7 @@ export const Dashboard: FC<any> = (props) => {
     const queryParams = {
       region: params.get("region") || null,
       page: "1",
-      pageSize: params.get("limit") || "10",
+      pageSize: params.get("pageSize") || "10",
       subCategoryId: params.get("subCategoryId") || null,
     };
     const res = await getTableData(queryParams);
@@ -159,29 +159,24 @@ export const Dashboard: FC<any> = (props) => {
 
   // FINISH-POST
   const handleFinish = async (values: any) => {
-    const query = `?&limit=${pageSize}&region=${values.region}&subCategoryId=${
-      values.subCategoryId
-    }&date_from=${params.get("date_from")}&date_to=${params.get("date_to")}`;
+    const query = `?&${globalVars.pageSize}=${pageSize}&${globalVars.region}=${
+      values.region
+    }&${globalVars.subCategoryId}=${values.subCategoryId}&${
+      globalVars.date_from
+    }=${params.get(`${globalVars.date_from}`)}&${
+      globalVars.date_to
+    }=${params.get(`${globalVars.date_to}`)}`;
 
     router.push(query, { scroll: false });
   };
 
-  // CHANGE
-  const handleChangeRazdel = async (e: { value: string }) => {
-    if (e?.value === "null") {
-      await getPodrazdel();
-    } else {
-      const data = await postChangeRazdel(e?.value);
-
-      data?.status === 200 && setPodrazdel(data?.data.results);
-    }
-  };
-
-  // CHANGE-PAGE-LIMIT
+  // CHANGE-PAGE-pageSize
   const handlePageSizeChange = (pageSize: number) => {
-    const query = `?limit=${pageSize}&region=${params.get(
-      "region"
-    )}&subCategoryId=${params.get("subCategoryId")}`;
+    const query = `?${globalVars.pageSize}=${pageSize}&${
+      globalVars.region
+    }=${params.get("region")}&${globalVars.subCategoryId}=${params.get(
+      "subCategoryId"
+    )}`;
 
     router.push(query);
   };
@@ -193,11 +188,16 @@ export const Dashboard: FC<any> = (props) => {
       categoryId: "null",
       subCategoryId: "null",
     });
-    if (params.get("date_from") && params.get("date_to")) {
+    if (
+      params.get(`${globalVars.date_from}`) &&
+      params.get(`${globalVars.date_to}`)
+    ) {
       return router.push(
-        `?&limit=${pageSize}&date_from=${params.get(
-          "date_from"
-        )}&date_to=${params.get("date_to")}`
+        `?&${globalVars.pageSize}=${pageSize}&${
+          globalVars.date_from
+        }=${params.get(`${globalVars.date_from}`)}&${
+          globalVars.date_to
+        }=${params.get(`${globalVars.date_to}`)}`
       );
     } else {
       return router.push("?", { scroll: false });
@@ -206,11 +206,13 @@ export const Dashboard: FC<any> = (props) => {
 
   // Search-Graph
   const searchGraph = async (values: any) => {
-    const query = `?&limit=${pageSize}&region=${params.get(
-      "region"
-    )}&subCategoryId=${params.get("subCategoryId")}&date_from=${
-      values.date_from
-    }&date_to=${values.date_to}`;
+    const query = `?&${globalVars.pageSize}=${pageSize}&${
+      globalVars.region
+    }=${params.get("region")}&${globalVars.subCategoryId}=${params.get(
+      "subCategoryId"
+    )}&${globalVars.date_from}=${values.date_from}&${globalVars.date_to}=${
+      values.date_to
+    }`;
     router.push(query, { scroll: false });
   };
 
@@ -220,15 +222,11 @@ export const Dashboard: FC<any> = (props) => {
       date_from: null,
       date_to: null,
     });
-    if (
-      params.get("region") &&
-      params.get("categoryId") &&
-      params.get("subCategoryId")
-    ) {
+    if (params.get("region") && params.get("subCategoryId")) {
       return router.push(
-        `?&limit=${pageSize}&region=${params.get(
+        `?&${globalVars.pageSize}=${pageSize}&${globalVars.region}=${params.get(
           "region"
-        )}&subCategoryId=${params.get("subCategoryId")}`,
+        )}&${globalVars.subCategoryId}=${params.get("subCategoryId")}`,
         { scroll: false }
       );
     } else {
@@ -244,8 +242,8 @@ export const Dashboard: FC<any> = (props) => {
         subCategoryId: params.get("subCategoryId") || "null",
       });
       reset1({
-        date_from: params.get("date_from") || "",
-        date_to: params.get("date_to") || "",
+        date_from: params.get(`${globalVars.date_from}`) || "",
+        date_to: params.get(`${globalVars.date_to}`) || "",
       });
     }, 1000);
 
@@ -265,6 +263,11 @@ export const Dashboard: FC<any> = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
+
+  useEffect(() => {
+    Promise.all([getRegions(), getPodrazdel()]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box
@@ -341,7 +344,7 @@ export const Dashboard: FC<any> = (props) => {
                   justify={"center"}
                   gap={{ base: "5px", sm: "5px", md: "10px", xl: "10px" }}
                 >
-                  <Eye width={"20px"} height={"20px"} />
+                  <Clipboard width={"20px"} height={"20px"} />
                   <Text
                     fontSize={{
                       base: "14px",
@@ -350,7 +353,7 @@ export const Dashboard: FC<any> = (props) => {
                       xl: "18px",
                     }}
                   >
-                    Тушунтирилганлар:
+                    Аризалар:
                   </Text>
                   <Text
                     fontWeight={600}
@@ -388,7 +391,7 @@ export const Dashboard: FC<any> = (props) => {
                       xl: "18px",
                     }}
                   >
-                    Қаноатлантирилганлар:
+                    Шикоятлар:
                   </Text>
                   <Text
                     fontWeight={600}
@@ -416,7 +419,7 @@ export const Dashboard: FC<any> = (props) => {
                   justify={"center"}
                   gap={{ base: "5px", sm: "5px", md: "10px", xl: "10px" }}
                 >
-                  <X width={"22px"} height={"22px"} />
+                  <CheckCircle width={"22px"} height={"22px"} />
                   <Text
                     fontSize={{
                       base: "14px",
@@ -425,7 +428,44 @@ export const Dashboard: FC<any> = (props) => {
                       xl: "18px",
                     }}
                   >
-                    Аноним:
+                    Таклифлар:
+                  </Text>
+                  <Text
+                    fontWeight={600}
+                    fontSize={scssVariables.fonts.titleSize}
+                  >
+                    {dataWithRegion?.ApplicationAnonymouscount || 0}
+                  </Text>
+                </HStack>
+              </CardBody>
+            </Card>
+            <Card variant="outline" borderColor={"lightgrey"}>
+              <CardBody
+                p={{ base: "10px", sm: "10px", md: "20px", xl: "20px" }}
+                bg={"pink.300"}
+                color={"white"}
+              >
+                <HStack
+                  flexDirection={{
+                    base: "column",
+                    sm: "column",
+                    md: "column",
+                    xl: "row",
+                  }}
+                  alignItems={"center"}
+                  justify={"center"}
+                  gap={{ base: "5px", sm: "5px", md: "10px", xl: "10px" }}
+                >
+                  <Key width={"22px"} height={"22px"} />
+                  <Text
+                    fontSize={{
+                      base: "14px",
+                      sm: "14px",
+                      md: "18px",
+                      xl: "18px",
+                    }}
+                  >
+                    Маълумот бериш:
                   </Text>
                   <Text
                     fontWeight={600}
@@ -517,7 +557,7 @@ export const Dashboard: FC<any> = (props) => {
                 type="date"
                 aria-label="date-to"
                 id="date-to"
-                {...register1("date_to")}
+                {...register1(`${globalVars.date_to}`)}
               />
               <Flex align={"center"} gap={"10px"} my={"8px"}>
                 <Button
@@ -556,7 +596,11 @@ export const Dashboard: FC<any> = (props) => {
           <PaperContent>
             <Box w={"100%"} h={"fit-content"}>
               <LineChart data={lineGraph} />
-              <SimpleGrid columns={2}>
+              <SimpleGrid
+                columns={2}
+                p={{ base: "5px", sm: "5px", md: "10px", xl: "10px" }}
+                gap={"8px"}
+              >
                 <List>
                   {Array.from(lineGraph)
                     ?.slice(0, 7)
@@ -589,7 +633,11 @@ export const Dashboard: FC<any> = (props) => {
           <PaperContent>
             <Box w={"100%"} h={"fit-content"}>
               <BarChart data={barGraph} />
-              <SimpleGrid columns={{ base: 1, sm: 1, md: 2, xl: 2 }}>
+              <SimpleGrid
+                columns={{ base: 1, sm: 1, md: 2, xl: 2 }}
+                p={{ base: "5px", sm: "5px", md: "10px", xl: "10px" }}
+                gap={"8px"}
+              >
                 <List>
                   {Array.from(barGraph)
                     ?.slice(0, 5)
