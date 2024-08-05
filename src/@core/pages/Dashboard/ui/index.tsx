@@ -359,7 +359,7 @@ export const Dashboard: FC<any> = (props) => {
                     fontWeight={600}
                     fontSize={scssVariables.fonts.titleSize}
                   >
-                    {dataWithRegion?.ApplicationExplainedcount || 0}
+                    {dataWithRegion?.ApplicationTypecount || 0}
                   </Text>
                 </HStack>
               </CardBody>
@@ -397,7 +397,7 @@ export const Dashboard: FC<any> = (props) => {
                     fontWeight={600}
                     fontSize={scssVariables.fonts.titleSize}
                   >
-                    {dataWithRegion?.ApplicationSatisfiedcount || 0}
+                    {dataWithRegion?.ApplicationComplaintcount || 0}
                   </Text>
                 </HStack>
               </CardBody>
@@ -434,7 +434,7 @@ export const Dashboard: FC<any> = (props) => {
                     fontWeight={600}
                     fontSize={scssVariables.fonts.titleSize}
                   >
-                    {dataWithRegion?.ApplicationAnonymouscount || 0}
+                    {dataWithRegion?.ApplicationTypeOffercount || 0}
                   </Text>
                 </HStack>
               </CardBody>
@@ -471,7 +471,7 @@ export const Dashboard: FC<any> = (props) => {
                     fontWeight={600}
                     fontSize={scssVariables.fonts.titleSize}
                   >
-                    {dataWithRegion?.ApplicationAnonymouscount || 0}
+                    {dataWithRegion?.ApplicationProvideInformation || 0}
                   </Text>
                 </HStack>
               </CardBody>
