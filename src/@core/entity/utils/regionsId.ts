@@ -1,0 +1,16 @@
+export const regionsId = {
+  Toshkent_shahar: "0ab07ffe-133b-4ec4-9df5-0ba21638c8aa",
+  Toshkent_viloyati: "02d61289-e071-435f-9ed9-0de8dfae8261",
+  Namangan_viloyati: "59b55f32-d64c-4645-801b-3420e3dc75bf",
+  Andijon_viloyati: "b5656906-18e5-4090-9a29-6b3d09af1b4b",
+  Sirdaryo_viloyati: "c15e4300-5c68-4550-948c-4abe5e834af1",
+  Qoraqalpogiston_respublikasi: "783a4a09-5ed9-4db5-9869-d6dc6d0e6bbd",
+  Fargona_viloyati: "1ef2c365-8fd4-4998-ae91-10d9936b1214",
+  Xorazm_viloyati: "449fcb11-82b2-4fbd-870b-ff68f887c952",
+  Jizzax_viloyati: "89027146-6a61-4473-9b72-50c07e7f7ece",
+  Surxondaryo_viloyati: "0186ef39-56d6-4d9a-92b3-e7b6421328bc",
+  Samarqand_viloyati: "bdabde22-5d64-427b-83d2-9f90b98c73e1",
+  Navoiy_viloyati: "ce5dc7f2-f3f6-443f-b0c7-0175b03e2f26",
+  Qashqadaryo_viloyati: "84e665b9-1772-4d77-83ea-01012b74cf4d",
+  Buxoro_viloyati: "402b1958-6359-40ff-ae9e-d4f94b6da4d4",
+};
