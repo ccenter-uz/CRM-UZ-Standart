@@ -49,11 +49,6 @@ export const Dashboardcolumns = [
     key: "podrazdel",
   },
   {
-    title:"Ариза тури",
-    dataIndex: "application_type",
-    key: "application_type",
-  },
-  {
     title: "Келиб тушган мурожаатлар",
     dataIndex: "income",
     key: "income",
