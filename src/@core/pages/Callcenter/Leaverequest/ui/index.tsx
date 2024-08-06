@@ -28,9 +28,9 @@ import { useGlobal } from "@/@core/application/store/global";
 import { getItemById, create, createDraft, edit, editDraft } from "../api";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
-import ReactInputMask from "react-input-mask";
+import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
 
 export const Leaverequest = () => {
@@ -71,7 +71,11 @@ export const Leaverequest = () => {
   } = useForm();
   const router = useRouter();
   const [data, setData] = useState<any>([]);
-  const role = Cookies.get("role");
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    Cookies.get("role") && setRole(Cookies.get("role") as string);
+  }, []);
 
   // BTNS
   const handleButtons = useCallback(() => {
@@ -399,7 +403,7 @@ export const Leaverequest = () => {
                 render={({ field }) => (
                   <Input
                     sx={inputStyle}
-                    as={ReactInputMask}
+                    as={InputMask}
                     mask="+(999)99 999-99-99"
                     maskChar=""
                     value={field.value}
@@ -489,7 +493,7 @@ export const Leaverequest = () => {
                 {...register("performer")}
               />
             </FormControl>
-            {role === "admin" && (
+            {role === "admin" ? (
               <FormControl>
                 <FormLabel htmlFor="perform_date" sx={labelStyle}>
                   Ижро қилинган сана
@@ -501,8 +505,8 @@ export const Leaverequest = () => {
                   {...register("perform_date")}
                 />
               </FormControl>
-            )}
-            {role === "admin" && (
+            ) : null}
+            {role === "admin" ? (
               <FormControl>
                 <FormLabel htmlFor="sended_to_organizations" sx={labelStyle}>
                   Тегишли идораларга юборилган
@@ -519,8 +523,8 @@ export const Leaverequest = () => {
                   ]}
                 />
               </FormControl>
-            )}
-            {role === "admin" && (
+            ) : null}
+            {role === "admin" ? (
               <FormControl>
                 <FormLabel htmlFor="response" sx={labelStyle}>
                   Мурожаатни жавоби
@@ -538,7 +542,7 @@ export const Leaverequest = () => {
                   ))}
                 </Select>
               </FormControl>
-            )}
+            ) : null}
           </form>
         </Box>
       </PaperContent>
