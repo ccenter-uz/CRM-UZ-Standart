@@ -5,20 +5,17 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import {
-  buttonStyle,
-  inputStyle,
-  labelStyle,
-  selectStyle,
-} from "../model/helper";
+import { buttonStyle, inputStyle, labelStyle } from "../model/helper";
 import { useGlobal } from "@/@core/application/store/global";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useEffect } from "react";
-import { responseList } from "@/@core/pages/Callcenter/Leaverequest/model/helper";
+import {
+  applicationTypeList,
+  responseList,
+} from "@/@core/pages/Callcenter/Leaverequest/model/helper";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 
 type Props = {
@@ -50,13 +47,13 @@ export const FilterTable: FC<Props> = (props) => {
       income_number: "",
       district: "null",
       region: "null",
-      categoryId: "null",
       subCategoryId: "null",
       date_from: "null",
       date_to: "null",
       response: "null",
       operators: "null",
       applicant: "",
+      application_type: "null",
     });
     await Promise.all([getPodrazdel(), getDistrict()]);
     router.push(`?page=1&pageSize=10`);
@@ -74,8 +71,8 @@ export const FilterTable: FC<Props> = (props) => {
             : params.get("income_number"),
         region: params.get("region") || "null",
         district: params.get("district") || "null",
-        categoryId: params.get("categoryId") || "null",
         subCategoryId: params.get("subCategoryId") || "null",
+        application_type: params.get("application_type") || "null",
         date_from: params.get("date_from") || "null",
         date_to: params.get("date_to") || "null",
       });
@@ -192,6 +189,22 @@ export const FilterTable: FC<Props> = (props) => {
               ...podrazdel?.map((field: any) => ({
                 value: field.id,
                 label: field.title,
+              })),
+            ]}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="application_type" sx={labelStyle}>
+            Мурожаат тури
+          </FormLabel>
+          <AutocompleteSelect
+            name="application_type"
+            control={control}
+            options={[
+              { value: "null", label: "Барчаси" },
+              ...applicationTypeList?.map((field: any) => ({
+                value: field.label,
+                label: field.label,
               })),
             ]}
           />

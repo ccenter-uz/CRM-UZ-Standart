@@ -49,13 +49,14 @@ export const Drafts: FC = () => {
     const query = {
       page: current,
       pageSize: pageSize,
-      applicant: params.get("applicant") || "null",
+      applicant: params.get("applicant") || "",
       operators: params.get("operators") || "null",
       response: params.get("response") || "null",
       income_number: params.get("income_number") || "null",
       region: params.get("region") || "null",
       district: params.get("district") || "null",
       subCategoryId: params.get("subCategoryId") || "null",
+      application_type: params.get("application_type") || "null",
       date_from:
         params.get("date_from") !== "null" && params.get("date_from")
           ? new Intl.DateTimeFormat("ru-RU").format(
@@ -110,9 +111,11 @@ export const Drafts: FC = () => {
       values.region || "null"
     }&${globalVars.district}=${values.district || "null"}&${
       globalVars.subCategoryId
-    }=${values.subCategoryId || "null"}&${globalVars.date_from}=${
-      values.date_from || "null"
-    }&${globalVars.date_to}=${values.date_to || "null"}`;
+    }=${values.subCategoryId || "null"}&${globalVars.application_type}=${
+      values.application_type || "null"
+    }&${globalVars.date_from}=${values.date_from || "null"}&${
+      globalVars.date_to
+    }=${values.date_to || "null"}`;
 
     router.push(query);
   };
@@ -132,6 +135,8 @@ export const Drafts: FC = () => {
       }=${params.get(`${globalVars.district}`) || "null"}&${
         globalVars.subCategoryId
       }=${params.get(`${globalVars.subCategoryId}`) || "null"}&${
+        globalVars.application_type
+      }=${params.get(`${globalVars.application_type}`) || "null"}&${
         globalVars.date_from
       }=${params.get(`${globalVars.date_from}`) || "null"}&${
         globalVars.date_to
@@ -153,6 +158,8 @@ export const Drafts: FC = () => {
       }=${params.get(`${globalVars.district}`) || "null"}&${
         globalVars.subCategoryId
       }=${params.get(`${globalVars.subCategoryId}`) || "null"}&${
+        globalVars.application_type
+      }=${params.get(`${globalVars.application_type}`) || "null"}&${
         globalVars.date_from
       }=${params.get(`${globalVars.date_from}`) || "null"}&${
         globalVars.date_to
