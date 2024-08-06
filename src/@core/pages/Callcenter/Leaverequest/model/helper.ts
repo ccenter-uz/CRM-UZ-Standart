@@ -50,7 +50,6 @@ export const buttonStyle = {
   bg: scssVariables.primary,
   color: "whitesmoke",
 };
-let list = [];
 
 export const organizationTypeList = [
   {
