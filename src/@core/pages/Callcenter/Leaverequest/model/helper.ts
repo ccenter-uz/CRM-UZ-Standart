@@ -80,7 +80,7 @@ export const applicationTypeList = [
   },
   {
     id: 5,
-    label: "Адашиб тушган",
+    label: "Бошқа масалалар",
   }
 ];
 export const resend_applicationList = [
