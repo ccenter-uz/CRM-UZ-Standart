@@ -12,6 +12,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "O'zstandart",
   description: "CRM-for O'zstandart",
+  icons: {
+    icon: "/logo.webp",
+  },
 };
 
 const RootLayout = ({

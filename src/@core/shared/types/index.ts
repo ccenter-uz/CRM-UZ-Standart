@@ -11,7 +11,9 @@ export enum globalVars {
   subCategoryId = "subCategoryId",
   date_from = "date_from",
   date_to = "date_to",
-  application_type="application_type"
+  application_type="application_type",
+  phone="phone",
+  applicant_birthday="applicant_birthday"
 }
 
 

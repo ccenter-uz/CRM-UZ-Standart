@@ -7,7 +7,7 @@ import {
   Input,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { buttonStyle, inputStyle, labelStyle } from "../model/helper";
 import { useGlobal } from "@/@core/application/store/global";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,6 +17,7 @@ import {
   responseList,
 } from "@/@core/pages/Callcenter/Leaverequest/model/helper";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
+import InputMask from "react-input-mask";
 
 type Props = {
   handleFinish: (data: any) => void;
@@ -44,6 +45,8 @@ export const FilterTable: FC<Props> = (props) => {
     setPodrazdel([]);
     setDistrict([]);
     reset({
+      phone: "",
+      applicant_birthday: "",
       income_number: "",
       district: "null",
       region: "null",
@@ -62,6 +65,8 @@ export const FilterTable: FC<Props> = (props) => {
   useEffect(() => {
     setTimeout(() => {
       reset({
+        phone: params.get("phone") || "",
+        applicant_birthday: params.get("applicant_birthday") || "",
         applicant: params.get("applicant") || "",
         operators: params.get("operators") || "null",
         response: params.get("response") || "null",
@@ -92,13 +97,45 @@ export const FilterTable: FC<Props> = (props) => {
       >
         <FormControl>
           <FormLabel htmlFor="income_number" sx={labelStyle}>
-            Қидириш:
+            Мурожаат рақами:
           </FormLabel>
           <Input
             sx={inputStyle}
             id="income_number"
             {...register("income_number")}
-            placeholder="Кирувчи рақам"
+            placeholder="UZST/1"
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="phone" sx={labelStyle}>
+            Телефон рақам:
+          </FormLabel>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <Input
+                sx={inputStyle}
+                as={InputMask}
+                mask="+(999)99 999-99-99"
+                maskChar=""
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="+(999)99 999-99-99"
+              />
+            )}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="applicant_birthday" sx={labelStyle}>
+            Туғиланган санаси:
+          </FormLabel>
+          <Input
+            sx={inputStyle}
+            id="applicant_birthday"
+            type="date"
+            {...register("applicant_birthday")}
+            placeholder="998971234567"
           />
         </FormControl>
         <FormControl>
@@ -155,7 +192,7 @@ export const FilterTable: FC<Props> = (props) => {
               { value: "null", label: "Барчаси" },
               ...regions?.map((region: any) => ({
                 value: region.id,
-                label: region.title,
+                label: region.title[0].toUpperCase() + region.title.slice(1),
               })),
             ]}
             onChange={handleChangeRegion}
