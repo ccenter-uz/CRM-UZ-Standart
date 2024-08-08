@@ -405,7 +405,7 @@ export const Leaverequest = () => {
                     sx={inputStyle}
                     as={InputMask}
                     mask="+(999)99 999-99-99"
-                    maskChar=""
+                    alwaysShowMask
                     value={field.value}
                     onChange={field.onChange}
                     placeholder="+(999)99 999-99-99"
@@ -425,7 +425,7 @@ export const Leaverequest = () => {
                     sx={inputStyle}
                     as={InputMask}
                     mask="+(999)99 999-99-99"
-                    maskChar=""
+                    alwaysShowMask
                     value={field.value}
                     onChange={field.onChange}
                     placeholder="+(999)99 999-99-99"
