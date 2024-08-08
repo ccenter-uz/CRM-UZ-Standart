@@ -118,11 +118,11 @@ export const responseList = [
 
 export const statusList = [
   {
-    id: 1,
+    id: "Кўриб чиқиш жараёнида",
     label: "Кўриб чиқиш жараёнида",
   },
   {
-    id: 2,
+    id: "Кўриб чиқилган",
     label: "Кўриб чиқилган",
   },
 ]
