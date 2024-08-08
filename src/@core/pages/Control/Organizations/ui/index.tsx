@@ -30,7 +30,7 @@ import { ModalRazdel } from "../../Razdel/ui/modal";
 import { FilterControlpage } from "@/@core/features/FilterControlpage";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export const Organizations: FC = () => {
+export const Executer: FC = () => {
   const {
     register,
     handleSubmit,
@@ -50,7 +50,7 @@ export const Organizations: FC = () => {
     },
     {
       id: 2,
-      title: "Тегишли идоралар ва бошқармалар",
+      title: "Раҳбариятлар",
     },
   ];
 
@@ -66,7 +66,7 @@ export const Organizations: FC = () => {
       title: "Номланиши",
       dataIndex: "title",
       key: "title",
-      render: (t: string) => t[0].toUpperCase() + t.slice(1),
+      render: (t: string) => t[0]?.toUpperCase() + t?.slice(1),
     },
     {
       title: "Яратилган санаси",
@@ -186,7 +186,7 @@ export const Organizations: FC = () => {
             color={scssVariables.textGreyColor}
             fontSize={{ base: "18px", sm: "18px", md: "24px", xl: "24px" }}
           >
-            Тегишли идоралар ва бошқармалар
+            Раҳбариятлар
           </Text>
           <Button
             onClick={handleOpen}

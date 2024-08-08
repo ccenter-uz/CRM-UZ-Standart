@@ -13,15 +13,15 @@ export const adminlinks = [
     href: "#",
     icon: PhoneCall,
     subMenu: [
-      {
+       {
         id: 11,
-        title: "Мурожаат қолдириш",
+        title: "Мурожаат яратиш",
         href: "/callcenter/leaveRequest",
         icon: Minus,
       },
       {
         id: 12,
-        title: "Мурожаатлар",
+        title: "Мурожаатлар базаси",
         href: "/callcenter/requests",
         icon: Minus,
       },
@@ -68,10 +68,16 @@ export const adminlinks = [
       },
       {
         id: 44,
-        title: "Тегишли идоралар",
-        href: "/control/orgs",
+        title: "Рахбариятлар",
+        href: "/control/executer",
         icon: Minus,
       },
+      {
+        id: 45,
+        title: "Ижрочилар",
+        href: "/control/users",
+        icon: Minus,
+      }
     ],
   },
 ];
@@ -84,13 +90,13 @@ export const userlinks = [
     subMenu: [
       {
         id: 11,
-        title: "Мурожаат қолдириш",
+        title: "Мурожаат яратиш",
         href: "/callcenter/leaveRequest",
         icon: Minus,
       },
       {
         id: 12,
-        title: "Мурожаатлар",
+        title: "Мурожаатлар базаси",
         href: "/callcenter/requests",
         icon: Minus,
       },

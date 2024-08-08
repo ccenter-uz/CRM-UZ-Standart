@@ -44,6 +44,8 @@ export const Requests: FC = () => {
     const query = {
       page: current,
       pageSize: pageSize,
+      phone: params.get("phone") || "null",
+      applicant_birthday: params.get("applicant_birthday") || "null",
       operators: params.get("operators") || "null",
       applicant: params.get("applicant") || "",
       application_type: params.get("application_type") || "null",
@@ -97,34 +99,40 @@ export const Requests: FC = () => {
   const handleFinish = (values: any) => {
     const query = `?${globalVars.page}=1&${globalVars.pageSize}=${pageSize}&${
       globalVars.operators
-    }=${values.operators || "null"}&${globalVars.applicant}=${
-      values.applicant || "null"
-    }&${globalVars.response}=${values.response || "null"}&${
-      globalVars.income_number
-    }=${values.income_number || "null"}&${globalVars.region}=${
-      values.region || "null"
-    }&${globalVars.district}=${values.district || "null"}&${
-      globalVars.subCategoryId
-    }=${values.subCategoryId || "null"}&${globalVars.application_type}=${
-      values.application_type
-    }&${globalVars.date_from}=${values.date_from || "null"}&${
-      globalVars.date_to
-    }=${values.date_to || "null"}`;
+    }=${values.operators || "null"}&${globalVars.phone}=${
+      values.phone || "null"
+    }&${globalVars.applicant_birthday}=${values.applicant_birthday || "null"}&${
+      globalVars.applicant
+    }=${values.applicant || "null"}&${globalVars.response}=${
+      values.response || "null"
+    }&${globalVars.income_number}=${values.income_number || "null"}&${
+      globalVars.region
+    }=${values.region || "null"}&${globalVars.district}=${
+      values.district || "null"
+    }&${globalVars.subCategoryId}=${values.subCategoryId || "null"}&${
+      globalVars.application_type
+    }=${values.application_type || "null"}&${globalVars.date_from}=${
+      values.date_from || "null"
+    }&${globalVars.date_to}=${values.date_to || "null"}`;
 
     router.push(query);
   };
   // PAGINATION
   const handlePageChange = (page: number) => {
     router.push(
-      `?${globalVars.page}=${page}&${globalVars.pageSize}=${pageSize}&${
+      `?${page}=1&${globalVars.pageSize}=${pageSize}&${
         globalVars.operators
       }=${params.get(`${globalVars.operators}`)}&${globalVars.applicant}=${
         params.get(`${globalVars.applicant}`) || "null"
-      }&${globalVars.response}=${params.get(`${globalVars.response}`)}&${
+      }&${globalVars.phone}=${params.get(`${globalVars.phone}`) || "null"}&${
+        globalVars.response
+      }=${params.get(`${globalVars.response}`) || "null"}&${
+        globalVars.applicant_birthday
+      }=${params.get(`${globalVars.applicant_birthday}`) || "null"}&${
         globalVars.income_number
       }=${params.get(`${globalVars.income_number}`) || "null"}&${
         globalVars.region
-      }}=${params.get(`${globalVars.region}`) || "null"}&${
+      }=${params.get(`${globalVars.region}`) || "null"}&${
         globalVars.district
       }=${params.get(`${globalVars.district}`) || "null"}&${
         globalVars.subCategoryId
@@ -141,7 +149,11 @@ export const Requests: FC = () => {
     router.push(
       `?${globalVars.page}=1&${globalVars.pageSize}=${pageSize}&${
         globalVars.operators
-      }=${params.get(`${globalVars.operators}`)}&${globalVars.applicant}=${
+      }=${params.get(`${globalVars.operators}`)}&${globalVars.phone}=${
+        params.get(`${globalVars.phone}`) || "null"
+      }&${globalVars.applicant_birthday}=${
+        params.get(`${globalVars.applicant_birthday}`) || "null"
+      }&${globalVars.applicant}=${
         params.get(`${globalVars.applicant}`) || "null"
       }&${globalVars.response}=${params.get(`${globalVars.response}`)}&${
         globalVars.income_number

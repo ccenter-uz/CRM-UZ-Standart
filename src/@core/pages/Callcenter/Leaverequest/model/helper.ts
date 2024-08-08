@@ -115,3 +115,14 @@ export const responseList = [
     label: "Аноним",
   },
 ];
+
+export const statusList = [
+  {
+    id: 1,
+    label: "Кўриб чиқиш жараёнида",
+  },
+  {
+    id: 2,
+    label: "Кўриб чиқилган",
+  },
+]

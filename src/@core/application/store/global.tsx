@@ -11,11 +11,28 @@ const useGlobalStore = create((set) => ({
   loading: false,
   operators: [],
   organizations: [],
+  performers: [],
   regions: [],
   district: [],
   setDistrict: (value: any) => set({ district: value }),
   setOperators: (value: any) => set({ operators: value }),
   setOrganizations: (value: any) => set({ organizations: value }),
+  setPerformers: (value: any) => set({ performers: value }),
+  getPerformers: async (params: {
+    page: number;
+    pageSize: number;
+    search: string;
+  }) => {
+    const fetchingPerformers = await api.get(`/Performer/all`, {
+      params,
+    });
+    set({
+      performers: fetchingPerformers.data?.results.map(
+        (item: any, index: number) => ({ ...item, index: index + 1 })
+      ),
+    });
+  },
+
   getOrganizations: async (params: {
     page: 1;
     pageSize: 100000;
@@ -139,6 +156,9 @@ export const useGlobal = () => {
   );
   const role = useGlobalStore((state: any) => state.role);
   const setRole = useGlobalStore((state: any) => state.setRole);
+  const getPerformers = useGlobalStore((state: any) => state.getPerformers);
+  const performers = useGlobalStore((state: any) => state.performers);
+  const setPerformers = useGlobalStore((state: any) => state.setPerformers);
 
   return {
     razdel,
@@ -161,5 +181,8 @@ export const useGlobal = () => {
     setOperators,
     role,
     setRole,
+    getPerformers,
+    performers,
+    setPerformers,
   };
 };

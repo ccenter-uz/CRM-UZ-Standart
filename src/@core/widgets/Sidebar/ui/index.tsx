@@ -10,6 +10,7 @@ import {
   AccordionPanel,
   Box,
   Button,
+  Flex,
   Icon,
   Text,
 } from "@chakra-ui/react";
@@ -38,25 +39,30 @@ export const Sidebar: FC<Props> = (props) => {
       h={"100%"}
       maxH={"100dvh"}
       bg={scssVariables.primary}
-      p={{ base: "8px", sm: "8px", md: "20px", xl: "20px" }}
       boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.10)"}
     >
-      <Text
-        color={"whitesmoke"}
-        fontSize={{ base: "0", sm: "13px", md: "20px", xl: "20px" }}
-        fontWeight={500}
-        textAlign={"center"}
+      <Flex
+        alignItems={"center"}
+        bg={"#fff"}
+        h={"70px"}
         mb={{ sm: "10px", md: "20px", xl: "20px" }}
       >
-        ЎзСтандарт
-      </Text>
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        gap={"10px"}
-        borderTop={"1px solid rgba(255, 255, 255, 0.6)"}
-        pt={"1em"}
-      >
+        <img
+          src="/logo.webp"
+          alt="logo"
+          loading="lazy"
+          width={74}
+          height={74}
+        />
+        <Text
+          color={"#252525"}
+          fontSize={{ base: "0", sm: "13px", md: "14px", xl: "14px" }}
+          fontWeight={500}
+        >
+          Ўзбекистон техник жиҳатдан тартибга солиш агентлиги
+        </Text>
+      </Flex>
+      <Box display={"flex"} flexDirection={"column"} gap={"10px"}>
         {String(role) === "admin"
           ? adminlinks.map((link) => (
               <Accordion key={link.id} allowMultiple>

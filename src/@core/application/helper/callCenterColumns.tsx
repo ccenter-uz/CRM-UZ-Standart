@@ -1,5 +1,5 @@
 import { Link } from "@/navigation";
-import { Icon, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { PenTool } from "react-feather";
 import { scssVariables } from "../utils/vars";
 
@@ -27,7 +27,12 @@ export const callcenterColumns = [
     ),
   },
   {
-    title: "Кирувчи рақам",
+    title: "Мурожаат холати",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
+    title: "Мурожаат рақами",
     dataIndex: "incoming_number",
     key: "incoming_number",
     render: (t: any, record: any) => (
@@ -37,6 +42,43 @@ export const callcenterColumns = [
         </Text>
       </Link>
     ),
+  },
+  {
+    title: "Мурожатчи",
+    dataIndex: "applicant",
+    key: "applicant",
+  },
+  {
+    title: "Туғиланган сана",
+    dataIndex: "applicant_birthday",
+    key: "applicant_birthday",
+  },
+  {
+    title: "Жинси",
+    dataIndex: "gender",
+    key: "gender",
+  },
+  {
+    title: "Телефон рақами",
+    dataIndex: "phone",
+    key: "phone",
+    render: (t: any, record: any) => (
+      <Flex flexDirection={"column"} gap={"4px"}>
+        <Text>{t}</Text>
+        <Text>{record?.additional_phone}</Text>
+      </Flex>
+    ),
+  },
+
+  {
+    title: "МФЙ-ҚФЙ-ОФЙ",
+    dataIndex: "mfy",
+    key: "mfy",
+  },
+  {
+    title: "Кўча ва уй",
+    dataIndex: "street_and_apartment",
+    key: "street_and_apartment",
   },
   {
     title: "Вилоят",
@@ -66,28 +108,12 @@ export const callcenterColumns = [
     key: "organization_type",
     align: "center",
   },
-  {
-    title: "Мурожатчи",
-    dataIndex: "applicant",
-    key: "applicant",
-  },
-  {
-    title: "Телефон рақами",
-    dataIndex: "phone",
-    key: "phone",
-  },
+
   {
     title: "Мурожаат тури",
     dataIndex: "application_type",
     key: "application_type",
     align: "center",
-  },
-  {
-    title: "Йўналиш",
-    dataIndex: "category_org",
-    key: "category_org",
-    render: (t: any, record: any) =>
-      record?.sub_category_call_center?.category_org?.title,
   },
   {
     title: "Тасниф",
@@ -118,6 +144,9 @@ export const callcenterColumns = [
     title: "Ижрочи",
     dataIndex: "performer",
     key: "performer",
+    render: (t: string, record: any) => {
+      return record?.performers?.title;
+    },
   },
   {
     title: "Ижро қилинган сана",
@@ -126,9 +155,9 @@ export const callcenterColumns = [
     align: "center",
   },
   {
-    title: "Тегишли идораларга юборилган",
-    dataIndex: "sended_to_organizations",
-    key: "sended_to_organizations",
+    title: "Рахбарият",
+    dataIndex: "seded_to_Organization",
+    key: "seded_to_Organization",
     align: "center",
     render: (t: string, record: any) => {
       return record?.seded_to_Organization?.title;
