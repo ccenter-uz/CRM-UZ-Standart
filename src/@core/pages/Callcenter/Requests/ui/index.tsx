@@ -44,7 +44,9 @@ export const Requests: FC = () => {
     const query = {
       page: current,
       pageSize: pageSize,
-      phone: params.get("phone") || "null",
+      phone: params.get("phone")
+        ? `+${String(params.get("phone")).trim()}`
+        : "null",
       applicant_birthday: params.get("applicant_birthday") || "null",
       operators: params.get("operators") || "null",
       applicant: params.get("applicant") || "",
@@ -67,6 +69,7 @@ export const Requests: FC = () => {
             )
           : "null",
     };
+
     const res = await GET(query);
 
     res.status === 200 && setTotal(res?.data?.pagination?.totalItems);
