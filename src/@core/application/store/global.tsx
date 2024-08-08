@@ -23,7 +23,7 @@ const useGlobalStore = create((set) => ({
     pageSize: number;
     search: string;
   }) => {
-    const fetchingPerformers = await api.get(`/Auth/getUser/all`, {
+    const fetchingPerformers = await api.get(`/Performer/all`, {
       params,
     });
     set({

@@ -44,8 +44,8 @@ export const Requests: FC = () => {
     const query = {
       page: current,
       pageSize: pageSize,
-      phone: params.get("phone") || "",
-      applicant_birthday: params.get("applicant_birthday") || "",
+      phone: params.get("phone") || "null",
+      applicant_birthday: params.get("applicant_birthday") || "null",
       operators: params.get("operators") || "null",
       applicant: params.get("applicant") || "",
       application_type: params.get("application_type") || "null",

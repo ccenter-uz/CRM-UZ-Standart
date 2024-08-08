@@ -66,7 +66,7 @@ export const Executer: FC = () => {
       title: "Номланиши",
       dataIndex: "title",
       key: "title",
-      render: (t: string) => t[0].toUpperCase() + t.slice(1),
+      render: (t: string) => t[0]?.toUpperCase() + t?.slice(1),
     },
     {
       title: "Яратилган санаси",

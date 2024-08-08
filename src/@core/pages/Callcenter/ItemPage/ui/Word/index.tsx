@@ -27,9 +27,8 @@ export const Word: FC<Props> = forwardRef((props, ref: any) => {
         mb={"1em"}
       >
         <Text as={"h1"} fontSize={"18px"} fontWeight={600}>
-          O‘zbekiston Respublikasi Vazirlar mahkamasi <br />
-          huzuridagi O'zbekiston texnik jihatdan tartibga solish agentligiga
-          "1880" qisqa maxsus raqam orqali kelib tushgan murojaat
+          O'zbekiston texnik jihatdan tartibga solish agentligiga "1880" qisqa
+          maxsus raqam orqali kelib tushgan murojaat
         </Text>
         <img src="/gerb.webp" alt="Prezidentga Murojaat Logo" />
       </Flex>

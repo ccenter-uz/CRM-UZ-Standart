@@ -1,5 +1,5 @@
 import { Link } from "@/navigation";
-import { Icon, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { PenTool } from "react-feather";
 import { scssVariables } from "../utils/vars";
 
@@ -54,12 +54,24 @@ export const callcenterColumns = [
     key: "applicant_birthday",
   },
   {
+    title: "Жинси",
+    dataIndex: "gender",
+    key: "gender",
+  },
+  {
     title: "Телефон рақами",
     dataIndex: "phone",
     key: "phone",
+    render: (t: any, record: any) => (
+      <Flex flexDirection={"column"} gap={"4px"}>
+        <Text>{t}</Text>
+        <Text>{record?.additional_phone}</Text>
+      </Flex>
+    ),
   },
+
   {
-    title: "МФЙ-ҚФЙ",
+    title: "МФЙ-ҚФЙ-ОФЙ",
     dataIndex: "mfy",
     key: "mfy",
   },
@@ -133,7 +145,7 @@ export const callcenterColumns = [
     dataIndex: "performer",
     key: "performer",
     render: (t: string, record: any) => {
-      return record?.performer?.title;
+      return record?.performers?.title;
     },
   },
   {
@@ -144,11 +156,11 @@ export const callcenterColumns = [
   },
   {
     title: "Рахбарият",
-    dataIndex: "executer",
-    key: "executer",
+    dataIndex: "seded_to_Organization",
+    key: "seded_to_Organization",
     align: "center",
     render: (t: string, record: any) => {
-      return record?.executer?.title;
+      return record?.seded_to_Organization?.title;
     },
   },
   {

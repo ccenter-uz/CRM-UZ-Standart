@@ -156,7 +156,7 @@ export const Itempage: FC = () => {
               <tr>
                 <td>1</td>
                 <td>Ijrochi</td>
-                <td>{data[0]?.performer || "Маълумот йўқ"}</td>
+                <td>{data[0]?.performers?.title || "Маълумот йўқ"}</td>
               </tr>
               <tr>
                 <td>2</td>
@@ -167,8 +167,9 @@ export const Itempage: FC = () => {
                 <td>3</td>
                 <td>Rahbariyat</td>
                 <td>
-                  {data[0]?.executer?.title[0].toUpperCase() +
-                    data[0]?.executer?.title.slice(1) || "Маълумот йўқ"}
+                  {data[0]?.seded_to_Organization?.title[0].toUpperCase() +
+                    data[0]?.seded_to_Organization?.title.slice(1) ||
+                    "Маълумот йўқ"}
                 </td>
               </tr>
               <tr>

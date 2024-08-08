@@ -49,8 +49,8 @@ export const Drafts: FC = () => {
     const query = {
       page: current,
       pageSize: pageSize,
-      phone: params.get("phone") || "",
-      applicant_birthday: params.get("applicant_birthday") || "",
+      phone: params.get("phone") || "null",
+      applicant_birthday: params.get("applicant_birthday") || "null",
       applicant: params.get("applicant") || "",
       operators: params.get("operators") || "null",
       response: params.get("response") || "null",

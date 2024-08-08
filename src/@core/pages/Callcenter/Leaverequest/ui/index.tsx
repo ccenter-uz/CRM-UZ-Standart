@@ -29,7 +29,7 @@ import { useGlobal } from "@/@core/application/store/global";
 import { getItemById, create, createDraft, edit, editDraft } from "../api";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
@@ -93,10 +93,10 @@ export const Leaverequest = () => {
             gap={"8px"}
           >
             <Button
-              isLoading={loading}
               id="save"
               sx={buttonStyle}
               onClick={handleSubmit(handleEdit)}
+              isDisabled={loading}
             >
               Сақлаш
             </Button>
@@ -121,12 +121,12 @@ export const Leaverequest = () => {
               }}
               onClick={handleSubmit(handleEditDraft)}
               variant={"outline"}
-              isLoading={loading}
+              isDisabled={loading}
             >
               Қоралама сақлаш
             </Button>
             <Button
-              isLoading={loading}
+              isDisabled={loading}
               id="save"
               sx={buttonStyle}
               onClick={handleSubmit(handleEdit)}
@@ -155,12 +155,12 @@ export const Leaverequest = () => {
             }}
             onClick={handleSubmit(handleCreateDraft)}
             variant={"outline"}
-            isLoading={loading}
+            isDisabled={loading}
           >
             Қоралама сақлаш
           </Button>
           <Button
-            isLoading={loading}
+            isDisabled={loading}
             id="save"
             sx={buttonStyle}
             onClick={handleSubmit(handleCreate)}
@@ -172,7 +172,7 @@ export const Leaverequest = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, params]);
+  }, [data, params, loading]);
 
   // CREATE
   const handleCreate = async (values: any) => {
@@ -254,6 +254,7 @@ export const Leaverequest = () => {
     if (params.get("edit")) {
       getItemById(params.get("edit") || "").then((res) => {
         setData(res?.data);
+
         res?.data.map((item: any) => {
           return reset({
             operator_number: item?.operator_number,
@@ -274,10 +275,15 @@ export const Leaverequest = () => {
             sub_category_id: item.sub_category_call_center?.id,
             id: item.id,
             perform_date: item.perform_date,
-            performer: item.performer?.id,
+            performers: item.performers?.id,
             response: item?.response,
-            executer: item?.executer?.id,
+            sended_to_organizations: item?.seded_to_Organization?.id || "null",
             status: item?.status,
+            email: item?.email,
+
+            income_date: "",
+            organization_name: "",
+            performer: "",
           });
         });
       });
@@ -301,10 +307,15 @@ export const Leaverequest = () => {
         sub_category_id: null,
         id: "",
         perform_date: "",
-        performer: "",
+        performers: "",
         response: "null",
-        executer: "null",
+        sended_to_organizations: "null",
         status: "1",
+        email: "",
+
+        income_date: "",
+        organization_name: "",
+        performer: "",
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -372,8 +383,8 @@ export const Leaverequest = () => {
                 {...register("gender", { required: true })}
               >
                 <option value="">Танланг</option>
-                <option value="male">Эркак</option>
-                <option value="female">Аёл</option>
+                <option value="Эркак">Эркак</option>
+                <option value="Аёл">Аёл</option>
               </Select>
               <FormErrorMessage
                 color={"red.300"}
@@ -420,6 +431,18 @@ export const Leaverequest = () => {
                     placeholder="+(999)99 999-99-99"
                   />
                 )}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="email" sx={labelStyle}>
+                Электрон манзил
+              </FormLabel>
+              <Input
+                sx={inputStyle}
+                id="email"
+                placeholder="example@gmail.com"
+                type="email"
+                {...register("email")}
               />
             </FormControl>
             <FormControl isInvalid={!!errors.region}>
@@ -607,11 +630,11 @@ export const Leaverequest = () => {
             </FormControl>
             {role === "admin" ? (
               <FormControl>
-                <FormLabel htmlFor="performer" sx={labelStyle}>
+                <FormLabel htmlFor="performers" sx={labelStyle}>
                   Ижрочи
                 </FormLabel>
-                {/* <AutocompleteSelect
-                  name="performer"
+                <AutocompleteSelect
+                  name="performers"
                   control={control}
                   options={[
                     { value: "null", label: "Барчаси" },
@@ -621,7 +644,7 @@ export const Leaverequest = () => {
                         dist.title[0]?.toUpperCase() + dist?.title?.slice(1),
                     })),
                   ]}
-                /> */}
+                />
               </FormControl>
             ) : null}
             {role === "admin" ? (
@@ -639,11 +662,11 @@ export const Leaverequest = () => {
             ) : null}
             {role === "admin" ? (
               <FormControl>
-                <FormLabel htmlFor="executer" sx={labelStyle}>
+                <FormLabel htmlFor="sended_to_organizations" sx={labelStyle}>
                   Рахбарият
                 </FormLabel>
                 <AutocompleteSelect
-                  name="executer"
+                  name="sended_to_organizations"
                   control={control}
                   options={[
                     { value: "null", label: "Барчаси" },
