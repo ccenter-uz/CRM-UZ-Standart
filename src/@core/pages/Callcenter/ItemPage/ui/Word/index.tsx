@@ -30,7 +30,12 @@ export const Word: FC<Props> = forwardRef((props, ref: any) => {
           O'zbekiston texnik jihatdan tartibga solish agentligiga "1880" qisqa
           maxsus raqam orqali kelib tushgan murojaat
         </Text>
-        <img src="/gerb.webp" alt="Prezidentga Murojaat Logo" />
+        <img
+          src="/gerb.webp"
+          alt="Prezidentga Murojaat Logo"
+          width={"170px"}
+          height={"170px"}
+        />
       </Flex>
 
       <table style={{ width: "100%" }}>

@@ -278,7 +278,7 @@ export const Leaverequest = () => {
             performers: item.performers?.id,
             response: item?.response,
             sended_to_organizations: item?.seded_to_Organization?.id || "null",
-            status: item?.status,
+            status: item?.status || "Кўриб чиқиш жараёнида",
             email: item?.email,
             income_date: item?.income_date,
 
@@ -310,7 +310,7 @@ export const Leaverequest = () => {
         performers: "",
         response: "null",
         sended_to_organizations: "null",
-        status: "1",
+        status: "Кўриб чиқиш жараёнида",
         email: "",
         income_date: Intl.DateTimeFormat("ru").format(Date.now()),
 

@@ -110,20 +110,11 @@ export const FilterTable: FC<Props> = (props) => {
           <FormLabel htmlFor="phone" sx={labelStyle}>
             Телефон рақам:
           </FormLabel>
-          <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => (
-              <Input
-                sx={inputStyle}
-                as={InputMask}
-                mask="+(999)99 999-99-99"
-                maskChar=""
-                value={field.value}
-                onChange={field.onChange}
-                placeholder="+(999)99 999-99-99"
-              />
-            )}
+          <Input
+            sx={inputStyle}
+            id="phone"
+            {...register("phone")}
+            placeholder="998971234567"
           />
         </FormControl>
         <FormControl>

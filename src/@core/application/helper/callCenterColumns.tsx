@@ -69,7 +69,11 @@ export const callcenterColumns = [
       </Flex>
     ),
   },
-
+  {
+    title: "Электрон манзил",
+    dataIndex: "email",
+    key: "email",
+  },
   {
     title: "МФЙ-ҚФЙ-ОФЙ",
     dataIndex: "mfy",
