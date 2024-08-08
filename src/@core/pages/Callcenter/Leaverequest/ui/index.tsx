@@ -280,8 +280,8 @@ export const Leaverequest = () => {
             sended_to_organizations: item?.seded_to_Organization?.id || "null",
             status: item?.status,
             email: item?.email,
+            income_date: item?.income_date,
 
-            income_date: "",
             organization_name: "",
             performer: "",
           });
@@ -312,8 +312,8 @@ export const Leaverequest = () => {
         sended_to_organizations: "null",
         status: "1",
         email: "",
+        income_date: Intl.DateTimeFormat("ru").format(Date.now()),
 
-        income_date: "",
         organization_name: "",
         performer: "",
       });
