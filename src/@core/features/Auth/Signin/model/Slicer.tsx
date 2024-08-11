@@ -1,4 +1,5 @@
 import { api } from "@/@core/application/utils/api";
+import { GlobalVars } from "@/@core/shared/vars";
 import { create } from "zustand";
 
 const useSigninSlice = create((set) => ({
@@ -7,10 +8,10 @@ const useSigninSlice = create((set) => ({
     try {
       const response = await api.get(`/Auth/getUser/all`, {
         params: {
-          page: 1,
-          pageSize: 100000,
-          search: "null",
-          role: "null",
+          page: GlobalVars.FirstPage,
+          pageSize: GlobalVars.All,
+          search: GlobalVars.NullString,
+          role: GlobalVars.NullString,
         },
       });
       set({ users: response?.data?.results });

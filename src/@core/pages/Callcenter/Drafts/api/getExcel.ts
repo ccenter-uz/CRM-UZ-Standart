@@ -1,45 +1,9 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { api } from "@/@core/application/utils/api";
+import moment from "moment";
 
 export const getcallcenterforExcel = async (columns: any, data: any) => {
   try {
-    // const params = {
-    //   page: 1,
-    //   pageSize: 9999999999,
-    //   operators: "null",
-    //   response: "null",
-    //   income_number: "null",
-    //   region: "null",
-    //   district: "null",
-    //   categoryId: "null",
-    //   subCategoryId: "null",
-    //   date_from: "null",
-    //   date_to: "null",
-    // };
-
-    // const res = await api.get(`/organization/allDrafts`, { params });
-    // const data = res.data.results.map((item: any, index: any) => ({
-    //   index: index + 1,
-    //   incoming_number: item?.incoming_number,
-    //   region: item?.districts?.region?.title,
-    //   district_id: item?.districts?.title,
-    //   income_date: item?.income_date,
-    //   organization_type: item?.organization_type,
-    //   applicant: item?.applicant,
-    //   phone: item?.phone,
-    //   application_type: item?.application_type,
-    //   category_org: item?.sub_category_call_center?.category_org?.title,
-    //   sub_category_id: item?.sub_category_call_center?.title,
-    //   comment: item?.comment,
-    //   resend_application: item?.resend_application,
-    //   organization_name: item?.organization_name,
-    //   performer: item?.performer,
-    //   perform_date: item?.perform_date,
-    //   sended_to_organizations: item?.sended_to_organizations,
-    //   response: item?.response,
-    // }));
-
     const headers = columns
       .filter((col: any) => col.title !== "")
       .map((col: any) => col.title);
@@ -50,13 +14,17 @@ export const getcallcenterforExcel = async (columns: any, data: any) => {
         item.index,
         item.incoming_number,
         item?.applicant,
-        item?.applicant_birthday,
+        item?.applicant_birthday
+          ? moment(item?.applicant_birthday).format("DD.MM.YYYY")
+          : "маълумот йўқ",
         item?.phone,
         item?.mfy,
         item?.street_and_apartment,
         item?.districts?.region?.title,
         item?.districts?.title,
-        item?.income_date,
+        item?.income_date
+          ? moment(item?.income_date).format("DD.MM.YYYY HH:mm")
+          : "маълумот йўқ",
         item?.organization_type,
         item?.application_type,
         item?.sub_category_call_center?.category_org?.title,
@@ -65,7 +33,9 @@ export const getcallcenterforExcel = async (columns: any, data: any) => {
         item?.resend_application,
         item?.operator_number,
         item?.performer,
-        item?.perform_date,
+        item?.perform_date
+          ? moment(item?.perform_date).format("DD.MM.YYYY HH:mm")
+          : "маълумот йўқ",
         item?.seded_to_Organization?.title,
         item?.response,
       ]),

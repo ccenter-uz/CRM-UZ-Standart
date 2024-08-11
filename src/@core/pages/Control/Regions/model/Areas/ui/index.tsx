@@ -28,6 +28,7 @@ import { FilterControlpage } from "@/@core/features/FilterControlpage";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { create, postChangePodrazdel, update } from "../api";
 import { ModalRazdel } from "./modal";
+import { GlobalVars } from "@/@core/shared/vars";
 
 export const Areas: FC = () => {
   const params = useSearchParams();
@@ -108,9 +109,9 @@ export const Areas: FC = () => {
   // GET
   const get = async () => {
     const send_params = {
-      page: current || 1,
-      pageSize: pageSize || 10,
-      search: params.get("search") || "null",
+      page: current || GlobalVars.FirstPage,
+      pageSize: pageSize || GlobalVars.DefaultPageSize,
+      search: params.get("search") || GlobalVars.NullString,
     };
     const res = await postChangePodrazdel(query.areas as string, send_params);
 
@@ -163,14 +164,16 @@ export const Areas: FC = () => {
   const handlePageChange = (newPage: number) => {
     router.push(
       `?page=${newPage}&pageSize=${pageSize}&search=${
-        params.get("search") || "null"
+        params.get("search") || GlobalVars.NullString
       }`
     );
   };
 
   const handlePageSizeChange = (pageSize: number) => {
     router.push(
-      `?page=1&pageSize=${pageSize}&search=${params.get("search") || "null"}`
+      `?page=1&pageSize=${pageSize}&search=${
+        params.get("search") || GlobalVars.NullString
+      }`
     );
   };
 

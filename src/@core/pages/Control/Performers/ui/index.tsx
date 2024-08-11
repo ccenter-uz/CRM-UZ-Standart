@@ -29,6 +29,7 @@ import { ModalRazdel } from "../../Razdel/ui/modal";
 import { FilterControlpage } from "@/@core/features/FilterControlpage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { create, get, update } from "../api";
+import { GlobalVars } from "@/@core/shared/vars";
 
 export const Performer: FC = () => {
   const {
@@ -105,9 +106,9 @@ export const Performer: FC = () => {
   // GET
   const getData = async () => {
     const query = {
-      page: current.toString() || "1",
-      pageSize: pageSize.toString() || "10",
-      search: params.get("search") || "null",
+      page: current.toString() || String(GlobalVars.FirstPage),
+      pageSize: pageSize.toString() || String(GlobalVars.DefaultPageSize),
+      search: params.get("search") || GlobalVars.NullString,
     };
 
     const res = await get(query);
@@ -163,13 +164,15 @@ export const Performer: FC = () => {
   const handlePageChange = (newPage: number) => {
     router.push(
       `?page=${newPage}&pageSize=${pageSize}&search=${
-        params.get("search") || "null"
+        params.get("search") || GlobalVars.NullString
       }`
     );
   };
   const handlePageSizeChange = (pageSize: number) => {
     router.push(
-      `?page=1&pageSize=${pageSize}&search=${params.get("search") || "null"}`
+      `?page=1&pageSize=${pageSize}&search=${
+        params.get("search") || GlobalVars.NullString
+      }`
     );
   };
 

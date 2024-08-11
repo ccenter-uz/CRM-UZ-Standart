@@ -18,6 +18,7 @@ import {
 } from "@/@core/pages/Callcenter/Leaverequest/model/helper";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
+import { GlobalVars } from "@/@core/shared/vars";
 
 type Props = {
   handleFinish: (data: any) => void;
@@ -48,15 +49,15 @@ export const FilterTable: FC<Props> = (props) => {
       phone: "",
       applicant_birthday: "",
       income_number: "",
-      district: "null",
-      region: "null",
-      subCategoryId: "null",
-      date_from: "null",
-      date_to: "null",
-      response: "null",
-      operators: "null",
+      district: GlobalVars.NullString,
+      region: GlobalVars.NullString,
+      subCategoryId: GlobalVars.NullString,
+      date_from: GlobalVars.NullString,
+      date_to: GlobalVars.NullString,
+      response: GlobalVars.NullString,
+      operators: GlobalVars.NullString,
       applicant: "",
-      application_type: "null",
+      application_type: GlobalVars.NullString,
     });
     await Promise.all([getPodrazdel(), getDistrict()]);
     router.push(`?page=1&pageSize=10`);
@@ -68,18 +69,19 @@ export const FilterTable: FC<Props> = (props) => {
         phone: params.get("phone") || "",
         applicant_birthday: params.get("applicant_birthday") || "",
         applicant: params.get("applicant") || "",
-        operators: params.get("operators") || "null",
-        response: params.get("response") || "null",
+        operators: params.get("operators") || GlobalVars.NullString,
+        response: params.get("response") || GlobalVars.NullString,
         income_number:
-          params.get("income_number") === "null"
+          params.get("income_number") === GlobalVars.NullString
             ? ""
             : params.get("income_number"),
-        region: params.get("region") || "null",
-        district: params.get("district") || "null",
-        subCategoryId: params.get("subCategoryId") || "null",
-        application_type: params.get("application_type") || "null",
-        date_from: params.get("date_from") || "null",
-        date_to: params.get("date_to") || "null",
+        region: params.get("region") || GlobalVars.NullString,
+        district: params.get("district") || GlobalVars.NullString,
+        subCategoryId: params.get("subCategoryId") || GlobalVars.NullString,
+        application_type:
+          params.get("application_type") || GlobalVars.NullString,
+        date_from: params.get("date_from") || GlobalVars.NullString,
+        date_to: params.get("date_to") || GlobalVars.NullString,
       });
     }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -157,7 +159,7 @@ export const FilterTable: FC<Props> = (props) => {
             name="operators"
             control={control}
             options={[
-              { value: "null", label: "Барчаси" },
+              { value: GlobalVars.NullString, label: "Барчаси" },
               ...operators?.map((field: any) => ({
                 value: field.id,
                 label: field?.full_name,
@@ -173,7 +175,7 @@ export const FilterTable: FC<Props> = (props) => {
             name="response"
             control={control}
             options={[
-              { value: "null", label: "Барчаси" },
+              { value: GlobalVars.NullString, label: "Барчаси" },
               ...responseList?.map((field: any) => ({
                 value: field.label,
                 label: field.label,
@@ -189,7 +191,7 @@ export const FilterTable: FC<Props> = (props) => {
             name="region"
             control={control}
             options={[
-              { value: "null", label: "Барчаси" },
+              { value: GlobalVars.NullString, label: "Барчаси" },
               ...regions?.map((region: any) => ({
                 value: region.id,
                 label: region.title[0].toUpperCase() + region.title.slice(1),
@@ -206,7 +208,7 @@ export const FilterTable: FC<Props> = (props) => {
             name="district"
             control={control}
             options={[
-              { value: "null", label: "Барчаси" },
+              { value: GlobalVars.NullString, label: "Барчаси" },
               ...district?.map((dist: any) => ({
                 value: dist.id,
                 label: dist.title,
@@ -222,7 +224,7 @@ export const FilterTable: FC<Props> = (props) => {
             name="subCategoryId"
             control={control}
             options={[
-              { value: "null", label: "Барчаси" },
+              { value: GlobalVars.NullString, label: "Барчаси" },
               ...podrazdel?.map((field: any) => ({
                 value: field.id,
                 label: field.title,
@@ -238,7 +240,7 @@ export const FilterTable: FC<Props> = (props) => {
             name="application_type"
             control={control}
             options={[
-              { value: "null", label: "Барчаси" },
+              { value: GlobalVars.NullString, label: "Барчаси" },
               ...applicationTypeList?.map((field: any) => ({
                 value: field.label,
                 label: field.label,
