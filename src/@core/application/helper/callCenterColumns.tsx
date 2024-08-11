@@ -1,6 +1,7 @@
 import { Link } from "@/navigation";
 import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { PenTool } from "react-feather";
+import moment from "moment";
 import { scssVariables } from "../utils/vars";
 
 export const callcenterColumns = [
@@ -52,6 +53,8 @@ export const callcenterColumns = [
     title: "Туғиланган сана",
     dataIndex: "applicant_birthday",
     key: "applicant_birthday",
+    render: (t: string) =>
+      t ? moment(t).format("DD.MM.YYYY") : "маълумот йўқ",
   },
   {
     title: "Жинси",
@@ -105,6 +108,8 @@ export const callcenterColumns = [
     dataIndex: "income_date",
     key: "income_date",
     align: "center",
+    render: (t: string) =>
+      t ? moment(t).format("DD.MM.YYYY HH:mm") : "маълумот йўқ",
   },
   {
     title: "Юридик / Жисмоний шахс",
@@ -157,6 +162,8 @@ export const callcenterColumns = [
     dataIndex: "perform_date",
     key: "perform_date",
     align: "center",
+    render: (t: string) =>
+      t ? moment(t).format("DD.MM.YYYY HH:mm") : "маълумот йўқ",
   },
   {
     title: "Рахбарият",
