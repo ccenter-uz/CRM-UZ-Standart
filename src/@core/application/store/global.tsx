@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { useEffect } from "react";
 import { api } from "../utils/api";
+import { GlobalVars } from "@/@core/shared/vars";
 
 const useGlobalStore = create((set) => ({
   role: null,
@@ -34,9 +35,9 @@ const useGlobalStore = create((set) => ({
   },
 
   getOrganizations: async (params: {
-    page: 1;
-    pageSize: 100000;
-    search: "null";
+    page: GlobalVars.FirstPage;
+    pageSize: GlobalVars.All;
+    search: GlobalVars.NullString;
   }) => {
     const fetchingOrganizations = await api.get(`/SendeOrganization/all`, {
       params,
@@ -62,7 +63,11 @@ const useGlobalStore = create((set) => ({
       ),
     });
   },
-  getRazdel: async (page = 1, pageSize = 100000, search = "null") => {
+  getRazdel: async (
+    page = GlobalVars.FirstPage,
+    pageSize = GlobalVars.All,
+    search = GlobalVars.NullString
+  ) => {
     set({ loading: true });
     const fethingRazdel = await api.get(`/SectionCategories/all`, {
       params: { page, pageSize, search },
@@ -75,10 +80,13 @@ const useGlobalStore = create((set) => ({
     });
     set({ loading: false });
   },
-  getPodrazdel: async (page = 1, pageSize = 100000) => {
+  getPodrazdel: async (
+    page = GlobalVars.FirstPage,
+    pageSize = GlobalVars.All
+  ) => {
     set({ loading: true });
     const fethingPodrazdel = await api.get(`/SubCategorySection/all`, {
-      params: { search: "null", page, pageSize },
+      params: { search: GlobalVars.NullString, page, pageSize },
     });
     set({
       podrazdel: fethingPodrazdel.data?.results?.map(
@@ -90,7 +98,11 @@ const useGlobalStore = create((set) => ({
     });
     set({ loading: false });
   },
-  getRegions: async (page = 1, pageSize = 100000, search = "null") => {
+  getRegions: async (
+    page = GlobalVars.FirstPage,
+    pageSize = GlobalVars.All,
+    search = GlobalVars.NullString
+  ) => {
     set({ loading: true });
     const fethingRegions = await api.get(`/RegionCategories/all`, {
       params: { page, pageSize, search },
@@ -101,7 +113,7 @@ const useGlobalStore = create((set) => ({
   getDistrictByRegionId: async (id: string, page = 1, pageSize = 1000000) => {
     set({ loading: true });
     const fethingDistrict = await api.get(`/RegionCategories/one/${id}`, {
-      params: { page, pageSize, search: "null" },
+      params: { page, pageSize, search: GlobalVars.NullString },
     });
     set({
       district: fethingDistrict.data?.results?.map(
@@ -113,7 +125,10 @@ const useGlobalStore = create((set) => ({
     });
     set({ loading: false });
   },
-  getDistrict: async (page = 1, pageSize = 100000) => {
+  getDistrict: async (
+    page = GlobalVars.FirstPage,
+    pageSize = GlobalVars.All
+  ) => {
     set({ loading: true });
     const fethingDistrict = await api.get(`/District/all`, {
       params: { page, pageSize },

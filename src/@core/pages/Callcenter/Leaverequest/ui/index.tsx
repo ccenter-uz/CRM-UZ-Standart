@@ -34,6 +34,7 @@ import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { GlobalVars } from "@/@core/shared/vars";
 
 export const Leaverequest = () => {
   const params = useSearchParams();
@@ -229,7 +230,7 @@ export const Leaverequest = () => {
   };
 
   const handleChangeRegion = async (e: { value: string }) => {
-    if (e?.value === "null") {
+    if (e?.value === GlobalVars.NullString) {
       await getDistrict();
     } else {
       const data = await getDistrictByRegionId(e?.value);
@@ -244,8 +245,16 @@ export const Leaverequest = () => {
       getPodrazdel(),
       getRegions(),
       getDistrict(),
-      getOrganizations({ page: 1, pageSize: 100000, search: "null" }),
-      getPerformers({ page: 1, pageSize: 100000, search: "null" }),
+      getOrganizations({
+        page: GlobalVars.FirstPage,
+        pageSize: GlobalVars.All,
+        search: GlobalVars.NullString,
+      }),
+      getPerformers({
+        page: GlobalVars.FirstPage,
+        pageSize: GlobalVars.All,
+        search: GlobalVars.NullString,
+      }),
     ]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -278,7 +287,8 @@ export const Leaverequest = () => {
             perform_date: item.perform_date,
             performers: item.performers?.id,
             response: item?.response,
-            sended_to_organizations: item?.seded_to_Organization?.id || "null",
+            sended_to_organizations:
+              item?.seded_to_Organization?.id || GlobalVars.NullString,
             status: item?.status || "Кўриб чиқиш жараёнида",
             email: item?.email,
             income_date: item?.income_date
@@ -301,18 +311,18 @@ export const Leaverequest = () => {
         region: null,
         district_id: null,
         IsDraf: "",
-        organization_type: "null",
-        application_type: "null",
+        organization_type: GlobalVars.NullString,
+        application_type: GlobalVars.NullString,
         applicant: "",
         phone: "",
         comment: "",
-        resend_application: "null",
+        resend_application: GlobalVars.NullString,
         sub_category_id: null,
         id: "",
         perform_date: "",
         performers: "",
-        response: "null",
-        sended_to_organizations: "null",
+        response: GlobalVars.NullString,
+        sended_to_organizations: GlobalVars.NullString,
         status: "Кўриб чиқиш жараёнида",
         email: "",
         income_date: moment(Date.now()).format("DD-MM-YYYY HH:mm"),
@@ -457,7 +467,7 @@ export const Leaverequest = () => {
                 name="region"
                 control={control}
                 options={[
-                  { value: "null", label: "Барчаси" },
+                  { value: GlobalVars.NullString, label: "Барчаси" },
                   ...regions?.map((region: any) => ({
                     value: region.id,
                     label:
@@ -483,7 +493,7 @@ export const Leaverequest = () => {
                 name="district_id"
                 control={control}
                 options={[
-                  { value: "null", label: "Барчаси" },
+                  { value: GlobalVars.NullString, label: "Барчаси" },
                   ...district?.map((dist: any) => ({
                     value: dist.id,
                     label: dist.title,
@@ -532,7 +542,7 @@ export const Leaverequest = () => {
                 id="organization_type"
                 {...register("organization_type")}
               >
-                <option value={"null"}>Танланг</option>
+                <option value={GlobalVars.NullString}>Танланг</option>
                 {organizationTypeList.map((organizationType) => (
                   <option
                     key={organizationType.id}
@@ -553,7 +563,7 @@ export const Leaverequest = () => {
                 id="application_type"
                 {...register("application_type")}
               >
-                <option value={"null"}>Танланг</option>
+                <option value={GlobalVars.NullString}>Танланг</option>
                 {applicationTypeList.map((applicationType) => (
                   <option
                     key={applicationType.id}
@@ -573,7 +583,7 @@ export const Leaverequest = () => {
                 name="sub_category_id"
                 control={control}
                 options={[
-                  { value: "null", label: "Барчаси" },
+                  { value: GlobalVars.NullString, label: "Барчаси" },
                   ...podrazdel?.map((field: any) => ({
                     value: field.id,
                     label: field.title,
@@ -620,7 +630,7 @@ export const Leaverequest = () => {
                 id="resend_application"
                 {...register("resend_application")}
               >
-                <option value={"null"}>Танланг</option>
+                <option value={GlobalVars.NullString}>Танланг</option>
                 {resend_applicationList.map((resend_application) => (
                   <option
                     key={resend_application.id}
@@ -640,7 +650,7 @@ export const Leaverequest = () => {
                   name="performers"
                   control={control}
                   options={[
-                    { value: "null", label: "Барчаси" },
+                    { value: GlobalVars.NullString, label: "Барчаси" },
                     ...performers?.map((dist: any) => ({
                       value: dist.id,
                       label:
@@ -672,7 +682,7 @@ export const Leaverequest = () => {
                   name="sended_to_organizations"
                   control={control}
                   options={[
-                    { value: "null", label: "Барчаси" },
+                    { value: GlobalVars.NullString, label: "Барчаси" },
                     ...organizations?.map((dist: any) => ({
                       value: dist.id,
                       label: dist.title[0].toUpperCase() + dist.title.slice(1),
@@ -691,7 +701,7 @@ export const Leaverequest = () => {
                   id="response"
                   {...register("response")}
                 >
-                  <option value={"null"}>Танланг</option>
+                  <option value={GlobalVars.NullString}>Танланг</option>
                   {responseList.map((response) => (
                     <option key={response.id} value={response.label}>
                       {response.label}

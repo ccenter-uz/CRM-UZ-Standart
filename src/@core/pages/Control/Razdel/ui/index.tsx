@@ -29,6 +29,7 @@ import { create, get, update } from "../api";
 import { toast } from "react-toastify";
 import { FilterControlpage } from "@/@core/features/FilterControlpage";
 import { useRouter, useSearchParams } from "next/navigation";
+import { GlobalVars } from "@/@core/shared/vars";
 
 export const Razdel: FC = () => {
   const params = useSearchParams();
@@ -125,9 +126,9 @@ export const Razdel: FC = () => {
   // GET
   const getData = async () => {
     const query = {
-      page: current || 1,
-      pageSize: pageSize || 10,
-      search: params.get("search") || "null",
+      page: current || GlobalVars.FirstPage,
+      pageSize: pageSize || GlobalVars.DefaultPageSize,
+      search: params.get("search") || GlobalVars.NullString,
     };
 
     const res = await get(query);
@@ -176,14 +177,16 @@ export const Razdel: FC = () => {
   const handlePageChange = (newPage: number) => {
     router.push(
       `?page=${newPage}&pageSize=${pageSize}&search=${
-        params.get("search") || "null"
+        params.get("search") || GlobalVars.NullString
       }`
     );
   };
 
   const handlePageSizeChange = (pageSize: number) => {
     router.push(
-      `?page=1&pageSize=${pageSize}&search=${params.get("search") || "null"}`
+      `?page=1&pageSize=${pageSize}&search=${
+        params.get("search") || GlobalVars.NullString
+      }`
     );
   };
 

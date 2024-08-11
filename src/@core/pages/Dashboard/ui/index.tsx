@@ -48,6 +48,7 @@ import { LineChart } from "./LineGraph";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import { globalVars } from "@/@core/shared/types";
+import { GlobalVars } from "@/@core/shared/vars";
 
 export const Dashboard: FC<any> = (props) => {
   const breadcrumbs = [
@@ -90,7 +91,7 @@ export const Dashboard: FC<any> = (props) => {
   // GET-LINEGRAPH
   const getLine = async () => {
     let query;
-    const errorCase = ["null", "", null];
+    const errorCase = [GlobalVars.NullString, "", null];
     if (
       !errorCase.includes(params.get("date_from")) &&
       !errorCase.includes(params.get(`${globalVars.date_to}`))
@@ -114,7 +115,7 @@ export const Dashboard: FC<any> = (props) => {
   // GET-BARGRAPH
   const getBar = async () => {
     let query;
-    const errorCase = ["null", "", null];
+    const errorCase = [GlobalVars.NullString, "", null];
     if (
       !errorCase.includes(params.get("date_from")) &&
       !errorCase.includes(params.get(`${globalVars.date_to}`))
@@ -184,9 +185,9 @@ export const Dashboard: FC<any> = (props) => {
   // CLEAR
   const handleClear = async () => {
     reset({
-      region: "null",
-      categoryId: "null",
-      subCategoryId: "null",
+      region: GlobalVars.NullString,
+      categoryId: GlobalVars.NullString,
+      subCategoryId: GlobalVars.NullString,
     });
     if (
       params.get(`${globalVars.date_from}`) &&
@@ -238,8 +239,8 @@ export const Dashboard: FC<any> = (props) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       reset({
-        region: params.get("region") || "null",
-        subCategoryId: params.get("subCategoryId") || "null",
+        region: params.get("region") || GlobalVars.NullString,
+        subCategoryId: params.get("subCategoryId") || GlobalVars.NullString,
       });
       reset1({
         date_from: params.get(`${globalVars.date_from}`) || "",
@@ -731,7 +732,7 @@ export const Dashboard: FC<any> = (props) => {
                       name="region"
                       control={control}
                       options={[
-                        { value: "null", label: "Барчаси" },
+                        { value: GlobalVars.NullString, label: "Барчаси" },
                         ...regions?.map((region: any) => ({
                           value: region.id,
                           label:
@@ -749,7 +750,7 @@ export const Dashboard: FC<any> = (props) => {
                       name="subCategoryId"
                       control={control}
                       options={[
-                        { value: "null", label: "Барчаси" },
+                        { value: GlobalVars.NullString, label: "Барчаси" },
                         ...podrazdel?.map((field: any) => ({
                           value: field.id,
                           label: field.title,

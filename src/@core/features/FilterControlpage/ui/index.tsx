@@ -3,20 +3,25 @@ import { useForm } from "react-hook-form";
 import { Search } from "react-feather";
 import { buttonStyle, inputStyle } from "../model/helper";
 import { useRouter, useSearchParams } from "next/navigation";
+import { GlobalVars } from "@/@core/shared/vars";
 
 export const FilterControlpage = () => {
   const params = useSearchParams();
   const { register, handleSubmit } = useForm({
     defaultValues: {
       search:
-        params.get("search") === "null" ? "" : (params.get("search") as string),
+        params.get("search") === GlobalVars.NullString
+          ? ""
+          : (params.get("search") as string),
     },
   });
   const router = useRouter();
 
   // FINISH
   const handleFinish = async (values: { search: string }) => {
-    const query = `?page=1&pageSize=10&search=${values.search || "null"}`;
+    const query = `?page=${GlobalVars.FirstPage}&pageSize=${
+      GlobalVars.DefaultPageSize
+    }&search=${values.search || GlobalVars.NullString}`;
     router.push(query);
   };
 
