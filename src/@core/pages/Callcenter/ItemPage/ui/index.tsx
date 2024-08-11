@@ -2,14 +2,14 @@
 import { FC, useEffect, useRef } from "react";
 import { useItemPage } from "../model/Slicer";
 import { useParams, useRouter } from "next/navigation";
-import { Box, Button, Divider, Flex, SimpleGrid, Text } from "@chakra-ui/react";
-import { PaperContent } from "@/@core/shared/ui/PaperContent";
+import { Box, Button, Flex, SimpleGrid } from "@chakra-ui/react";
 import BreadCrumb from "@/@core/shared/ui/Breadcrumb";
 import { Download, PenTool } from "react-feather";
 import { scssVariables } from "@/@core/application/utils/vars";
 import { EditHistorydrawer } from "./EditHistoryDrawer";
 import { useDisclosure } from "@/@core/shared/hook/useDisclosure";
 import { Word } from "./Word";
+import moment from "moment";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -161,7 +161,12 @@ export const Itempage: FC = () => {
               <tr>
                 <td>2</td>
                 <td>Ijro qilingan sana</td>
-                <td>{data[0]?.perform_date || "Маълумот йўқ"}</td>
+                <td>
+                  {" "}
+                  {data[0]?.perform_date
+                    ? moment(data[0]?.perform_date).format("DD.MM.YYYY HH:mm")
+                    : "Маълумот йўқ"}
+                </td>
               </tr>
               <tr>
                 <td>3</td>

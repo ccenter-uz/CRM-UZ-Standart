@@ -33,6 +33,7 @@ import { useCallback, useEffect, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
+import moment from "moment";
 
 export const Leaverequest = () => {
   const params = useSearchParams();
@@ -280,7 +281,9 @@ export const Leaverequest = () => {
             sended_to_organizations: item?.seded_to_Organization?.id || "null",
             status: item?.status || "Кўриб чиқиш жараёнида",
             email: item?.email,
-            income_date: item?.income_date,
+            income_date: item?.income_date
+              ? moment(item?.income_date).format("DD-MM-YYYY HH:mm")
+              : moment(Date.now()).format("DD-MM-YYYY HH:mm"),
 
             organization_name: "",
             performer: "",
@@ -312,7 +315,7 @@ export const Leaverequest = () => {
         sended_to_organizations: "null",
         status: "Кўриб чиқиш жараёнида",
         email: "",
-        income_date: Intl.DateTimeFormat("ru").format(Date.now()),
+        income_date: moment(Date.now()).format("DD-MM-YYYY HH:mm"),
 
         organization_name: "",
         performer: "",
