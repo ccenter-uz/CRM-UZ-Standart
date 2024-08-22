@@ -26,4 +26,3 @@ export const scssVariables = {
   },
 };
 
-export const BASE_URL = "https://api.crm.ccenter.uz/api/v1";

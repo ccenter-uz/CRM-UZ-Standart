@@ -29,7 +29,7 @@ import { useGlobal } from "@/@core/application/store/global";
 import { getItemById, create, createDraft, edit, editDraft } from "../api";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
@@ -78,6 +78,7 @@ export const Leaverequest = () => {
   const [data, setData] = useState<any>([]);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [disableRequireds, setDisableRequireds] = useState<boolean>(true);
 
   useEffect(() => {
     Cookies.get("role") && setRole(Cookies.get("role") as string);
@@ -264,6 +265,8 @@ export const Leaverequest = () => {
     if (params.get("edit")) {
       getItemById(params.get("edit") || "").then((res) => {
         setData(res?.data);
+        if (res?.data[0]?.application_type === "Бошқа масалалар")
+          setDisableRequireds(false);
 
         res?.data.map((item: any) => {
           return reset({
@@ -274,7 +277,7 @@ export const Leaverequest = () => {
             mfy: item?.mfy,
             street_and_apartment: item?.street_and_apartment,
             region: item.districts?.region?.id,
-            district_id: item.districts?.id,
+            district_id: item.districts?.id || GlobalVars.NullString,
             IsDraf: item.IsDraf,
             organization_type: item.organization_type,
             application_type: item.application_type,
@@ -282,7 +285,8 @@ export const Leaverequest = () => {
             phone: item.phone,
             comment: item.comment,
             resend_application: item.resend_application,
-            sub_category_id: item.sub_category_call_center?.id,
+            sub_category_id:
+              item.sub_category_call_center?.id || GlobalVars.NullString,
             id: item.id,
             perform_date: item.perform_date,
             performers: item.performers?.id,
@@ -309,7 +313,7 @@ export const Leaverequest = () => {
         mfy: "",
         street_and_apartment: "",
         region: null,
-        district_id: null,
+        district_id: GlobalVars.NullString,
         IsDraf: "",
         organization_type: GlobalVars.NullString,
         application_type: GlobalVars.NullString,
@@ -317,7 +321,7 @@ export const Leaverequest = () => {
         phone: "",
         comment: "",
         resend_application: GlobalVars.NullString,
-        sub_category_id: null,
+        sub_category_id: GlobalVars.NullString,
         id: "",
         perform_date: "",
         performers: "",
@@ -360,7 +364,7 @@ export const Leaverequest = () => {
                 id="applicant"
                 placeholder="Азизов Азиз Азизович"
                 type="text"
-                {...register("applicant", { required: true })}
+                {...register("applicant", { required: disableRequireds })}
               />
               <FormErrorMessage
                 color={"red.300"}
@@ -377,7 +381,9 @@ export const Leaverequest = () => {
                 sx={inputStyle}
                 id="applicant_birthday"
                 type="date"
-                {...register("applicant_birthday", { required: true })}
+                {...register("applicant_birthday", {
+                  required: disableRequireds,
+                })}
               />
               <FormErrorMessage
                 color={"red.300"}
@@ -393,7 +399,7 @@ export const Leaverequest = () => {
               <Select
                 sx={selectStyle}
                 id="gender"
-                {...register("gender", { required: true })}
+                {...register("gender", { required: disableRequireds })}
               >
                 <option value="">Танланг</option>
                 <option value="Эркак">Эркак</option>
@@ -445,7 +451,7 @@ export const Leaverequest = () => {
                 Вилоят
               </FormLabel>
               <AutocompleteSelect
-                required
+                required={disableRequireds}
                 name="region"
                 control={control}
                 options={[
@@ -471,7 +477,7 @@ export const Leaverequest = () => {
                 Туман
               </FormLabel>
               <AutocompleteSelect
-                required
+                required={disableRequireds}
                 name="district_id"
                 control={control}
                 options={[
@@ -544,6 +550,11 @@ export const Leaverequest = () => {
                 sx={selectStyle}
                 id="application_type"
                 {...register("application_type")}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                  e.target.value === "Бошқа масалалар"
+                    ? setDisableRequireds(false)
+                    : setDisableRequireds(true)
+                }
               >
                 <option value={GlobalVars.NullString}>Танланг</option>
                 {applicationTypeList.map((applicationType) => (
@@ -561,7 +572,7 @@ export const Leaverequest = () => {
                 Тасниф
               </FormLabel>
               <AutocompleteSelect
-                required
+                required={disableRequireds}
                 name="sub_category_id"
                 control={control}
                 options={[
@@ -692,7 +703,7 @@ export const Leaverequest = () => {
                 </Select>
               </FormControl>
             ) : null}
-            {role === "admin" ? (
+            {/* {role === "admin" ? (
               <FormControl>
                 <FormLabel htmlFor="status" sx={labelStyle}>
                   Мурожаат холати
@@ -710,7 +721,7 @@ export const Leaverequest = () => {
                   ))}
                 </Select>
               </FormControl>
-            ) : null}
+            ) : null} */}
           </form>
         </Box>
       </PaperContent>
