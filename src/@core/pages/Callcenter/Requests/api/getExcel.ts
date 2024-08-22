@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import moment from "moment";
+import dayjs from "dayjs";
 
 export const getcallcenterforExcel = async (columns: any, data: any) => {
   try {
@@ -15,7 +15,7 @@ export const getcallcenterforExcel = async (columns: any, data: any) => {
         item.incoming_number,
         item?.applicant,
         item?.applicant_birthday
-          ? moment(item?.applicant_birthday).format("DD.MM.YYYY")
+          ? dayjs(item?.applicant_birthday).format("DD.MM.YYYY")
           : "маълумот йўқ",
         item?.phone,
         item?.mfy,
@@ -23,7 +23,7 @@ export const getcallcenterforExcel = async (columns: any, data: any) => {
         item?.districts?.region?.title,
         item?.districts?.title,
         item?.income_date
-          ? moment(item?.income_date).format("DD.MM.YYYY HH:mm")
+          ? dayjs(item?.income_date).format("DD.MM.YYYY HH:mm")
           : "маълумот йўқ",
         item?.organization_type,
         item?.application_type,
@@ -34,7 +34,7 @@ export const getcallcenterforExcel = async (columns: any, data: any) => {
         item?.operator_number,
         item?.performer,
         item?.perform_date
-          ? moment(item?.perform_date).format("DD.MM.YYYY HH:mm")
+          ? dayjs(item?.perform_date).format("DD.MM.YYYY HH:mm")
           : "маълумот йўқ",
         item?.seded_to_Organization?.title,
         item?.response,

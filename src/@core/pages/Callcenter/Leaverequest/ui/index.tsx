@@ -24,7 +24,7 @@ import {
   selectStyle,
   statusList,
 } from "../model/helper";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useGlobal } from "@/@core/application/store/global";
 import { getItemById, create, createDraft, edit, editDraft } from "../api";
 import { toast } from "react-toastify";
@@ -33,7 +33,7 @@ import { useCallback, useEffect, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
-import moment from "moment";
+import dayjs from "dayjs";
 import { GlobalVars } from "@/@core/shared/vars";
 
 export const Leaverequest = () => {
@@ -292,8 +292,8 @@ export const Leaverequest = () => {
             status: item?.status || "Кўриб чиқиш жараёнида",
             email: item?.email,
             income_date: item?.income_date
-              ? moment(item?.income_date).format("DD-MM-YYYY HH:mm")
-              : moment(Date.now()).format("DD-MM-YYYY HH:mm"),
+              ? dayjs(new Date(item?.income_date)).format("DD-MM-YYYY HH:mm")
+              : new Date(),
 
             organization_name: "",
             performer: "",
@@ -325,7 +325,7 @@ export const Leaverequest = () => {
         sended_to_organizations: GlobalVars.NullString,
         status: "Кўриб чиқиш жараёнида",
         email: "",
-        income_date: moment(Date.now()).format("DD-MM-YYYY HH:mm"),
+        income_date: new Date(),
 
         organization_name: "",
         performer: "",
@@ -410,40 +410,22 @@ export const Leaverequest = () => {
               <FormLabel htmlFor="phone" sx={labelStyle}>
                 Телефон рақам
               </FormLabel>
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    sx={inputStyle}
-                    as={InputMask}
-                    mask="+(999)99 999-99-99"
-                    alwaysShowMask
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="+(999)99 999-99-99"
-                  />
-                )}
+              <Input
+                sx={inputStyle}
+                as={InputMask}
+                mask="+(999)99 999-99-99"
+                {...register("phone")}
               />
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="additional_phone" sx={labelStyle}>
                 Қўшимча телефон рақам
               </FormLabel>
-              <Controller
-                name="additional_phone"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    sx={inputStyle}
-                    as={InputMask}
-                    mask="+(999)99 999-99-99"
-                    alwaysShowMask
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="+(999)99 999-99-99"
-                  />
-                )}
+              <Input
+                sx={inputStyle}
+                as={InputMask}
+                mask="+(999)99 999-99-99"
+                {...register("additional_phone")}
               />
             </FormControl>
             <FormControl>

@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { FC, forwardRef } from "react";
-import moment from "moment";
+import dayjs from "dayjs";
 import "./style.css";
 
 type Props = {
@@ -62,8 +62,10 @@ export const Word: FC<Props> = forwardRef((props, ref: any) => {
             <td>3</td>
             <td>Murojaat tuzilgan sana va vaqt</td>
             <td>
-              {data[0]?.income_date
-                ? moment(data[0]?.income_date).format("DD.MM.YYYY HH:mm")
+              {data[0]?.create_data
+                ? dayjs(new Date(data[0]?.create_data)).format(
+                    "DD.MM.YYYY HH:mm"
+                  )
                 : "Маълумот йўқ"}
             </td>
           </tr>
@@ -91,7 +93,7 @@ export const Word: FC<Props> = forwardRef((props, ref: any) => {
               {data[0]?.gender || "Маълумот йўқ"}
               {" - "}
               {data[0]?.applicant_birthday
-                ? moment(data[0]?.applicant_birthday).format("DD.MM.YYYY")
+                ? dayjs(data[0]?.applicant_birthday).format("DD.MM.YYYY")
                 : "Маълумот йўқ"}
             </td>
           </tr>

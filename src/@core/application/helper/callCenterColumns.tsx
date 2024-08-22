@@ -1,9 +1,9 @@
 import { Link } from "@/navigation";
 import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
 import { PenTool } from "react-feather";
-import moment from "moment";
 import { scssVariables } from "../utils/vars";
 import { GlobalVars } from "@/@core/shared/vars";
+import dayjs from "dayjs";
 
 export const callcenterColumns = [
   {
@@ -55,7 +55,7 @@ export const callcenterColumns = [
     dataIndex: "applicant_birthday",
     key: "applicant_birthday",
     render: (t: string) =>
-      t ? moment(t).format("DD.MM.YYYY") : "маълумот йўқ",
+      t ? dayjs(new Date(t)).format("DD.MM.YYYY") : "маълумот йўқ",
   },
   {
     title: "Жинси",
@@ -106,11 +106,11 @@ export const callcenterColumns = [
   },
   {
     title: "Келиб тушган вақти",
-    dataIndex: "income_date",
-    key: "income_date",
+    dataIndex: "create_data",
+    key: "create_data",
     align: "center",
     render: (t: string) =>
-      t ? moment(t).format("DD.MM.YYYY HH:mm") : "маълумот йўқ",
+      t ? dayjs(new Date(t)).format("DD.MM.YYYY HH:mm") : "маълумот йўқ",
   },
   {
     title: "Юридик / Жисмоний шахс",
@@ -164,7 +164,7 @@ export const callcenterColumns = [
     key: "perform_date",
     align: "center",
     render: (t: string) =>
-      t ? moment(t).format("DD.MM.YYYY HH:mm") : "маълумот йўқ",
+      t ? dayjs(new Date(t)).format("DD.MM.YYYY HH:mm") : "маълумот йўқ",
   },
   {
     title: "Рахбарият",
