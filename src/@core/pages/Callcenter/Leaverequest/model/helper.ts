@@ -118,6 +118,10 @@ export const responseList = [
 
 export const statusList = [
   {
+    id:"Янги",
+    label:"Янги"
+  },
+  {
     id: "Кўриб чиқиш жараёнида",
     label: "Кўриб чиқиш жараёнида",
   },

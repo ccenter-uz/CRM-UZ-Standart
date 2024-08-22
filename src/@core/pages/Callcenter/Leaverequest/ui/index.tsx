@@ -323,7 +323,7 @@ export const Leaverequest = () => {
         performers: "",
         response: GlobalVars.NullString,
         sended_to_organizations: GlobalVars.NullString,
-        status: "Кўриб чиқиш жараёнида",
+        status: "Янги",
         email: "",
         income_date: new Date(),
 
@@ -697,7 +697,12 @@ export const Leaverequest = () => {
                 <FormLabel htmlFor="status" sx={labelStyle}>
                   Мурожаат холати
                 </FormLabel>
-                <Select sx={selectStyle} id="status" {...register("status")}>
+                <Select
+                  defaultValue={"Янги"}
+                  sx={selectStyle}
+                  id="status"
+                  {...register("status")}
+                >
                   {statusList.map((status) => (
                     <option key={status.id} value={status.label}>
                       {status.label}
