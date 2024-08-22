@@ -100,6 +100,7 @@ export const Leaverequest = () => {
               sx={buttonStyle}
               onClick={handleSubmit(handleEdit)}
               isDisabled={loading}
+              isLoading={loading}
             >
               Сақлаш
             </Button>
@@ -125,11 +126,13 @@ export const Leaverequest = () => {
               onClick={handleSubmit(handleEditDraft)}
               variant={"outline"}
               isDisabled={loading}
+              isLoading={loading}
             >
               Қоралама сақлаш
             </Button>
             <Button
               isDisabled={loading}
+              isLoading={loading}
               id="save"
               sx={buttonStyle}
               onClick={handleSubmit(handleEdit)}
@@ -159,11 +162,13 @@ export const Leaverequest = () => {
             onClick={handleSubmit(handleCreateDraft)}
             variant={"outline"}
             isDisabled={loading}
+            isLoading={loading}
           >
             Қоралама сақлаш
           </Button>
           <Button
             isDisabled={loading}
+            isLoading={loading}
             id="save"
             sx={buttonStyle}
             onClick={handleSubmit(handleCreate)}
