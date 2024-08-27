@@ -708,7 +708,7 @@ export const Leaverequest = () => {
                 </Select>
               </FormControl>
             ) : null}
-            {/* {role === "admin" ? (
+            {role === "admin" ? (
               <FormControl>
                 <FormLabel htmlFor="status" sx={labelStyle}>
                   Мурожаат холати
@@ -726,7 +726,7 @@ export const Leaverequest = () => {
                   ))}
                 </Select>
               </FormControl>
-            ) : null} */}
+            ) : null}
           </form>
         </Box>
       </PaperContent>

@@ -4,9 +4,6 @@ const withNextIntl = require("next-intl/plugin")();
 
 const nextConfig = {
   reactStrictMode: true,
-  experimental:{
-    optimizeCss: true,
-  }
-};
+ };
 
 module.exports = withNextIntl(nextConfig);
