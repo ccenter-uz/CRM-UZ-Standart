@@ -24,16 +24,16 @@ import {
   selectStyle,
   statusList,
 } from "../model/helper";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useGlobal } from "@/@core/application/store/global";
 import { getItemById, create, createDraft, edit, editDraft } from "../api";
 import { toast } from "react-toastify";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import Cookies from "js-cookie";
-import moment from "moment";
+import dayjs from "dayjs";
 import { GlobalVars } from "@/@core/shared/vars";
 
 export const Leaverequest = () => {
@@ -78,6 +78,7 @@ export const Leaverequest = () => {
   const [data, setData] = useState<any>([]);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [disableRequireds, setDisableRequireds] = useState<boolean>(true);
 
   useEffect(() => {
     Cookies.get("role") && setRole(Cookies.get("role") as string);
@@ -99,6 +100,7 @@ export const Leaverequest = () => {
               sx={buttonStyle}
               onClick={handleSubmit(handleEdit)}
               isDisabled={loading}
+              isLoading={loading}
             >
               Сақлаш
             </Button>
@@ -124,11 +126,13 @@ export const Leaverequest = () => {
               onClick={handleSubmit(handleEditDraft)}
               variant={"outline"}
               isDisabled={loading}
+              isLoading={loading}
             >
               Қоралама сақлаш
             </Button>
             <Button
               isDisabled={loading}
+              isLoading={loading}
               id="save"
               sx={buttonStyle}
               onClick={handleSubmit(handleEdit)}
@@ -158,11 +162,13 @@ export const Leaverequest = () => {
             onClick={handleSubmit(handleCreateDraft)}
             variant={"outline"}
             isDisabled={loading}
+            isLoading={loading}
           >
             Қоралама сақлаш
           </Button>
           <Button
             isDisabled={loading}
+            isLoading={loading}
             id="save"
             sx={buttonStyle}
             onClick={handleSubmit(handleCreate)}
@@ -264,6 +270,8 @@ export const Leaverequest = () => {
     if (params.get("edit")) {
       getItemById(params.get("edit") || "").then((res) => {
         setData(res?.data);
+        if (res?.data[0]?.application_type === "Бошқа масалалар")
+          setDisableRequireds(false);
 
         res?.data.map((item: any) => {
           return reset({
@@ -274,7 +282,7 @@ export const Leaverequest = () => {
             mfy: item?.mfy,
             street_and_apartment: item?.street_and_apartment,
             region: item.districts?.region?.id,
-            district_id: item.districts?.id,
+            district_id: item.districts?.id || GlobalVars.NullString,
             IsDraf: item.IsDraf,
             organization_type: item.organization_type,
             application_type: item.application_type,
@@ -282,7 +290,8 @@ export const Leaverequest = () => {
             phone: item.phone,
             comment: item.comment,
             resend_application: item.resend_application,
-            sub_category_id: item.sub_category_call_center?.id,
+            sub_category_id:
+              item.sub_category_call_center?.id || GlobalVars.NullString,
             id: item.id,
             perform_date: item.perform_date,
             performers: item.performers?.id,
@@ -292,8 +301,8 @@ export const Leaverequest = () => {
             status: item?.status || "Кўриб чиқиш жараёнида",
             email: item?.email,
             income_date: item?.income_date
-              ? moment(item?.income_date).format("DD-MM-YYYY HH:mm")
-              : moment(Date.now()).format("DD-MM-YYYY HH:mm"),
+              ? dayjs(new Date(item?.income_date)).format("DD-MM-YYYY HH:mm")
+              : new Date(),
 
             organization_name: "",
             performer: "",
@@ -309,7 +318,7 @@ export const Leaverequest = () => {
         mfy: "",
         street_and_apartment: "",
         region: null,
-        district_id: null,
+        district_id: GlobalVars.NullString,
         IsDraf: "",
         organization_type: GlobalVars.NullString,
         application_type: GlobalVars.NullString,
@@ -317,15 +326,15 @@ export const Leaverequest = () => {
         phone: "",
         comment: "",
         resend_application: GlobalVars.NullString,
-        sub_category_id: null,
+        sub_category_id: GlobalVars.NullString,
         id: "",
         perform_date: "",
         performers: "",
         response: GlobalVars.NullString,
         sended_to_organizations: GlobalVars.NullString,
-        status: "Кўриб чиқиш жараёнида",
+        status: "Янги",
         email: "",
-        income_date: moment(Date.now()).format("DD-MM-YYYY HH:mm"),
+        income_date: new Date(),
 
         organization_name: "",
         performer: "",
@@ -360,7 +369,7 @@ export const Leaverequest = () => {
                 id="applicant"
                 placeholder="Азизов Азиз Азизович"
                 type="text"
-                {...register("applicant", { required: true })}
+                {...register("applicant", { required: disableRequireds })}
               />
               <FormErrorMessage
                 color={"red.300"}
@@ -377,7 +386,9 @@ export const Leaverequest = () => {
                 sx={inputStyle}
                 id="applicant_birthday"
                 type="date"
-                {...register("applicant_birthday", { required: true })}
+                {...register("applicant_birthday", {
+                  required: disableRequireds,
+                })}
               />
               <FormErrorMessage
                 color={"red.300"}
@@ -393,7 +404,7 @@ export const Leaverequest = () => {
               <Select
                 sx={selectStyle}
                 id="gender"
-                {...register("gender", { required: true })}
+                {...register("gender", { required: disableRequireds })}
               >
                 <option value="">Танланг</option>
                 <option value="Эркак">Эркак</option>
@@ -410,40 +421,22 @@ export const Leaverequest = () => {
               <FormLabel htmlFor="phone" sx={labelStyle}>
                 Телефон рақам
               </FormLabel>
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    sx={inputStyle}
-                    as={InputMask}
-                    mask="+(999)99 999-99-99"
-                    alwaysShowMask
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="+(999)99 999-99-99"
-                  />
-                )}
+              <Input
+                sx={inputStyle}
+                as={InputMask}
+                mask="+(999)99 999-99-99"
+                {...register("phone")}
               />
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="additional_phone" sx={labelStyle}>
                 Қўшимча телефон рақам
               </FormLabel>
-              <Controller
-                name="additional_phone"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    sx={inputStyle}
-                    as={InputMask}
-                    mask="+(999)99 999-99-99"
-                    alwaysShowMask
-                    value={field.value}
-                    onChange={field.onChange}
-                    placeholder="+(999)99 999-99-99"
-                  />
-                )}
+              <Input
+                sx={inputStyle}
+                as={InputMask}
+                mask="+(999)99 999-99-99"
+                {...register("additional_phone")}
               />
             </FormControl>
             <FormControl>
@@ -463,7 +456,7 @@ export const Leaverequest = () => {
                 Вилоят
               </FormLabel>
               <AutocompleteSelect
-                required
+                required={disableRequireds}
                 name="region"
                 control={control}
                 options={[
@@ -489,7 +482,7 @@ export const Leaverequest = () => {
                 Туман
               </FormLabel>
               <AutocompleteSelect
-                required
+                required={disableRequireds}
                 name="district_id"
                 control={control}
                 options={[
@@ -562,6 +555,11 @@ export const Leaverequest = () => {
                 sx={selectStyle}
                 id="application_type"
                 {...register("application_type")}
+                onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                  e.target.value === "Бошқа масалалар"
+                    ? setDisableRequireds(false)
+                    : setDisableRequireds(true)
+                }
               >
                 <option value={GlobalVars.NullString}>Танланг</option>
                 {applicationTypeList.map((applicationType) => (
@@ -579,7 +577,7 @@ export const Leaverequest = () => {
                 Тасниф
               </FormLabel>
               <AutocompleteSelect
-                required
+                required={disableRequireds}
                 name="sub_category_id"
                 control={control}
                 options={[
@@ -715,7 +713,12 @@ export const Leaverequest = () => {
                 <FormLabel htmlFor="status" sx={labelStyle}>
                   Мурожаат холати
                 </FormLabel>
-                <Select sx={selectStyle} id="status" {...register("status")}>
+                <Select
+                  defaultValue={"Янги"}
+                  sx={selectStyle}
+                  id="status"
+                  {...register("status")}
+                >
                   {statusList.map((status) => (
                     <option key={status.id} value={status.label}>
                       {status.label}
