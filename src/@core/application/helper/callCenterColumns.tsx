@@ -1,9 +1,16 @@
 import { Link } from "@/navigation";
 import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
-import { PenTool } from "react-feather";
+import { Circle, PenTool } from "react-feather";
 import { scssVariables } from "../utils/vars";
 import { GlobalVars } from "@/@core/shared/vars";
 import dayjs from "dayjs";
+
+const checkStatusApp: { [key: string]: string } = {
+  Янги: "#68D391",
+  "Кўриб чиқиш жараёнида": "#F6AD55",
+  "Кўриб чиқилган": "#F56565",
+  "Кўриб чиқиш жараёни чўздирилган": "#ECC94B",
+};
 
 export const callcenterColumns = [
   {
@@ -32,6 +39,19 @@ export const callcenterColumns = [
     title: "Мурожаат холати",
     dataIndex: "status",
     key: "status",
+    render: (t: string) => {
+      return (
+        <Flex align={"center"} gap={"5px"}>
+          <Circle
+            width={8}
+            height={8}
+            fill={checkStatusApp[t]}
+            color={checkStatusApp[t]}
+          />
+          <Text color={checkStatusApp[t]}>{t}</Text>
+        </Flex>
+      );
+    },
   },
   {
     title: "Мурожаат рақами",

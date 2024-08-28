@@ -45,6 +45,7 @@ export const Requests: FC = () => {
     const query = {
       page: current,
       pageSize: pageSize,
+      status: params.get("status") || GlobalVars.NullString,
       phone:
         params.has("phone") && params.get("phone") !== GlobalVars.NullString
           ? `+${String(params.get("phone")).trim()}`
@@ -110,13 +111,15 @@ export const Requests: FC = () => {
   const handleFinish = (values: any) => {
     const query = `?${globalVars.page}=1&${globalVars.pageSize}=${pageSize}&${
       globalVars.operators
-    }=${values.operators || GlobalVars.NullString}&${globalVars.phone}=${
-      values.phone || GlobalVars.NullString
-    }&${globalVars.applicant_birthday}=${
-      values.applicant_birthday || GlobalVars.NullString
-    }&${globalVars.applicant}=${values.applicant || GlobalVars.NullString}&${
-      globalVars.response
-    }=${values.response || GlobalVars.NullString}&${globalVars.income_number}=${
+    }=${values.operators || GlobalVars.NullString}&${globalVars.status}=${
+      values.status || GlobalVars.NullString
+    }&${globalVars.phone}=${values.phone || GlobalVars.NullString}&${
+      globalVars.applicant_birthday
+    }=${values.applicant_birthday || GlobalVars.NullString}&${
+      globalVars.applicant
+    }=${values.applicant || GlobalVars.NullString}&${globalVars.response}=${
+      values.response || GlobalVars.NullString
+    }&${globalVars.income_number}=${
       values.income_number || GlobalVars.NullString
     }&${globalVars.region}=${values.region || GlobalVars.NullString}&${
       globalVars.district
@@ -135,7 +138,9 @@ export const Requests: FC = () => {
     router.push(
       `?${page}=1&${globalVars.pageSize}=${pageSize}&${
         globalVars.operators
-      }=${params.get(`${globalVars.operators}`)}&${globalVars.applicant}=${
+      }=${params.get(`${globalVars.operators}`)}&${globalVars.status}=${
+        params.get(`${globalVars.status}`) || GlobalVars.NullString
+      }&${globalVars.applicant}=${
         params.get(`${globalVars.applicant}`) || GlobalVars.NullString
       }&${globalVars.phone}=${
         params.get(`${globalVars.phone}`) || GlobalVars.NullString

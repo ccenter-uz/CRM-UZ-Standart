@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-export enum globalVars {
+export const enum globalVars {
   page = "page",
   pageSize = "pageSize",
   operators = "operators",
@@ -13,7 +13,8 @@ export enum globalVars {
   date_to = "date_to",
   application_type="application_type",
   phone="phone",
-  applicant_birthday="applicant_birthday"
+  applicant_birthday="applicant_birthday",
+  status="status"
 }
 
 
