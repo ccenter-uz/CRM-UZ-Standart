@@ -15,6 +15,7 @@ import { FC, useEffect } from "react";
 import {
   applicationTypeList,
   responseList,
+  statusList,
 } from "@/@core/pages/Callcenter/Leaverequest/model/helper";
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
@@ -46,6 +47,7 @@ export const FilterTable: FC<Props> = (props) => {
     setPodrazdel([]);
     setDistrict([]);
     reset({
+      status: params.get("status") || GlobalVars.NullString,
       phone: "",
       applicant_birthday: "",
       income_number: "",
@@ -66,6 +68,7 @@ export const FilterTable: FC<Props> = (props) => {
   useEffect(() => {
     setTimeout(() => {
       reset({
+        status: params.get("status") || GlobalVars.NullString,
         phone: params.get("phone") || "",
         applicant_birthday: params.get("applicant_birthday") || "",
         applicant: params.get("applicant") || "",
@@ -234,6 +237,22 @@ export const FilterTable: FC<Props> = (props) => {
             options={[
               { value: GlobalVars.NullString, label: "Барчаси" },
               ...applicationTypeList?.map((field: any) => ({
+                value: field.label,
+                label: field.label,
+              })),
+            ]}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="status" sx={labelStyle}>
+            Мурожаат холати
+          </FormLabel>
+          <AutocompleteSelect
+            name="status"
+            control={control}
+            options={[
+              { value: GlobalVars.NullString, label: "Барчаси" },
+              ...statusList?.map((field: any) => ({
                 value: field.label,
                 label: field.label,
               })),
