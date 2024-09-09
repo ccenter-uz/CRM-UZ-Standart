@@ -36,6 +36,27 @@ export const callcenterColumns = [
     ),
   },
   {
+    title: "Жавоб хати",
+    dataIndex: "file_response",
+    key: "file_response",
+    align: "center",
+    render: (t: any) => {
+      return t ? (
+        <Text
+          as="a"
+          target="_blank"
+          href={"/#"}
+          color={"blue.300"}
+          cursor={"pointer"}
+        >
+          Кўриш
+        </Text>
+      ) : (
+        <Text color={"grey"}>Йўқ</Text>
+      );
+    },
+  },
+  {
     title: "Мурожаат холати",
     dataIndex: "status",
     key: "status",
@@ -53,6 +74,7 @@ export const callcenterColumns = [
       );
     },
   },
+
   {
     title: "Мурожаат рақами",
     dataIndex: "incoming_number",
