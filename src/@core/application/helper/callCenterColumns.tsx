@@ -1,9 +1,10 @@
 import { Link } from "@/navigation";
 import { Flex, Icon, Text, Tooltip } from "@chakra-ui/react";
-import { Circle, PenTool } from "react-feather";
+import { Circle, Eye, PenTool } from "react-feather";
 import { scssVariables } from "../utils/vars";
 import { GlobalVars } from "@/@core/shared/vars";
 import dayjs from "dayjs";
+import { IMG_URL } from "../utils/api";
 
 const checkStatusApp: { [key: string]: string } = {
   Янги: "#68D391",
@@ -37,17 +38,18 @@ export const callcenterColumns = [
   },
   {
     title: "Жавоб хати",
-    dataIndex: "file_response",
-    key: "file_response",
+    dataIndex: "response_file",
+    key: "response_file",
     align: "center",
     render: (t: any) => {
       return t ? (
         <Text
           as="a"
           target="_blank"
-          href={"/#"}
+          href={`${IMG_URL}/${t}`}
           color={"blue.300"}
           cursor={"pointer"}
+          aria-label="Кўриш"
         >
           Кўриш
         </Text>

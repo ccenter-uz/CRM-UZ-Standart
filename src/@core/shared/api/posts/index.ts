@@ -1,12 +1,12 @@
 import { api } from "@/@core/application/utils/api";
 
 const enum ENDPOINTS {
-    createResponseFile ='/response-file/create',
+    createResponseFile ='/organization/response',
 }
 
-export const createResponseFile = async (values: unknown) => {
+export const createResponseFile = async (values: unknown,id:string) => {
     try {
-        const response = await api.post(`${ENDPOINTS.createResponseFile}`, values);
+        const response = await api.post(`${ENDPOINTS.createResponseFile}/${id}`, values);
        
         return response;
     } catch (error) {

@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, ChangeEventHandler, FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC, useEffect, useRef } from "react";
 import { useItemPage } from "../model/Slicer";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -14,7 +14,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import BreadCrumb from "@/@core/shared/ui/Breadcrumb";
-import { Download, PenTool, Send } from "react-feather";
+import { Download, Eye, PenTool, Send } from "react-feather";
 import { scssVariables } from "@/@core/application/utils/vars";
 import { EditHistorydrawer } from "./EditHistoryDrawer";
 import { useDisclosure } from "@/@core/shared/hook/useDisclosure";
@@ -24,6 +24,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { createResponseFile } from "@/@core/shared/api";
 import { toast } from "react-toastify";
+import { IMG_URL } from "@/@core/application/utils/api";
 
 export const Itempage: FC = () => {
   const query = useParams();
@@ -103,9 +104,8 @@ export const Itempage: FC = () => {
     if (file[0]) {
       const formData = new FormData();
       formData.append("file", file[0]);
-      formData.append("application_id", query?.id as string);
       setLoading(true);
-      const res = await createResponseFile(formData);
+      const res = await createResponseFile(formData, query?.id as string);
 
       res?.status === 201 &&
         (toast.success("Маълумот сақланди", { position: "bottom-right" }),
@@ -127,16 +127,25 @@ export const Itempage: FC = () => {
     >
       <BreadCrumb item={breadcrumb} />
       <Flex justify={"space-between"} align={"flex-end"}>
-        {data[0]?.file_response ? (
+        {data[0]?.response_file ? (
           <Text
             variant={"link"}
             as={"a"}
-            href={"#"}
+            href={`${IMG_URL}/${data[0]?.response_file}`}
             fontSize={scssVariables.fonts.parag}
             target="_blank"
             textDecoration={"underline"}
             color={"blue.400"}
+            display={"flex"}
+            alignItems={"center"}
+            gap={"5px"}
           >
+            <Eye
+              color={scssVariables.link}
+              cursor={"pointer"}
+              width={"16px"}
+              height={"16px"}
+            />
             Жавоб хатини кўриш
           </Text>
         ) : (
