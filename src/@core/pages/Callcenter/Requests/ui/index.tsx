@@ -136,7 +136,7 @@ export const Requests: FC = () => {
   // PAGINATION
   const handlePageChange = (page: number) => {
     router.push(
-      `?${page}=1&${globalVars.pageSize}=${pageSize}&${
+      `?${globalVars.page}=${page}&${globalVars.pageSize}=${pageSize}&${
         globalVars.operators
       }=${params.get(`${globalVars.operators}`)}&${globalVars.status}=${
         params.get(`${globalVars.status}`) || GlobalVars.NullString
