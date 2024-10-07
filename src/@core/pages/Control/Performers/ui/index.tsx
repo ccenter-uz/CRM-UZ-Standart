@@ -30,6 +30,10 @@ import { FilterControlpage } from "@/@core/features/FilterControlpage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { create, get, update } from "../api";
 import { GlobalVars } from "@/@core/shared/vars";
+import {
+  firstLetterCapitalizer,
+  secondNameCapitalizer,
+} from "@/@core/application/helper/fn";
 
 export const Performer: FC = () => {
   const {
@@ -67,7 +71,7 @@ export const Performer: FC = () => {
       title: "ФИО",
       dataIndex: "title",
       key: "title",
-      render: (t: string) => t[0]?.toUpperCase() + t?.slice(1),
+      render: (t: string) => secondNameCapitalizer(firstLetterCapitalizer(t)),
     },
     {
       title: "Яратилган санаси",

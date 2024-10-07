@@ -6,6 +6,8 @@ export const api = axios.create({
   baseURL: "https://api.uzstd.ccenter.uz/api/v1",
 });
 
+export const IMG_URL= "https://storage.googleapis.com/telecom2003"
+
 // Interceptor for all api request
 api.interceptors.request.use(
   function (config) {

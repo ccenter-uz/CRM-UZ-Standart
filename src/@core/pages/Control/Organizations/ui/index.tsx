@@ -30,6 +30,10 @@ import { ModalRazdel } from "../../Razdel/ui/modal";
 import { FilterControlpage } from "@/@core/features/FilterControlpage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GlobalVars } from "@/@core/shared/vars";
+import {
+  firstLetterCapitalizer,
+  secondNameCapitalizer,
+} from "@/@core/application/helper/fn";
 
 export const Executer: FC = () => {
   const {
@@ -67,7 +71,7 @@ export const Executer: FC = () => {
       title: "Номланиши",
       dataIndex: "title",
       key: "title",
-      render: (t: string) => t[0]?.toUpperCase() + t?.slice(1),
+      render: (t: string) => secondNameCapitalizer(firstLetterCapitalizer(t)),
     },
     {
       title: "Яратилган санаси",

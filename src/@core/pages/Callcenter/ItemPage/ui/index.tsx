@@ -1,10 +1,20 @@
 "use client";
-import { FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC, useEffect, useRef } from "react";
 import { useItemPage } from "../model/Slicer";
 import { useParams, useRouter } from "next/navigation";
-import { Box, Button, Flex, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  SimpleGrid,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import BreadCrumb from "@/@core/shared/ui/Breadcrumb";
-import { Download, PenTool } from "react-feather";
+import { Download, Eye, PenTool, Send } from "react-feather";
 import { scssVariables } from "@/@core/application/utils/vars";
 import { EditHistorydrawer } from "./EditHistoryDrawer";
 import { useDisclosure } from "@/@core/shared/hook/useDisclosure";
@@ -12,11 +22,14 @@ import { Word } from "./Word";
 import dayjs from "dayjs";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { createResponseFile } from "@/@core/shared/api";
+import { toast } from "react-toastify";
+import { IMG_URL } from "@/@core/application/utils/api";
 
 export const Itempage: FC = () => {
   const query = useParams();
   const router = useRouter();
-  const { data, getData } = useItemPage();
+  const { data, getData, loading, setLoading } = useItemPage();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const wordRef = useRef<any>();
   const iframeRef = useRef<any>();
@@ -84,6 +97,24 @@ export const Itempage: FC = () => {
     pdf.save(`№-${data[0]?.incoming_number}.pdf`);
   };
 
+  // UPLOAD RESPONSE
+  const uploadResponse = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files as FileList;
+    if (file[0]) {
+      const formData = new FormData();
+      formData.append("file", file[0]);
+      setLoading(true);
+      const res = await createResponseFile(formData, query?.id as string);
+
+      res?.status === 201 &&
+        (toast.success("Маълумот сақланди", { position: "bottom-right" }),
+        getData(query?.id));
+      setLoading(false);
+    } else {
+      console.log("undefined");
+    }
+  };
+
   useEffect(() => {
     getData(query?.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,38 +125,100 @@ export const Itempage: FC = () => {
       p={{ base: "5px 10px", sm: "5px 10px", md: "8px 16px", xl: "8px 16px" }}
     >
       <BreadCrumb item={breadcrumb} />
-      <Flex
-        align={"center"}
-        gap={"10px"}
-        justify={"flex-end"}
-        flexWrap={"wrap"}
-      >
-        <Button
-          h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
-          leftIcon={<Download width={"16px"} height={"16px"} />}
-          fontSize={scssVariables.fonts.parag}
-          onClick={wordDownload}
-          fontWeight={400}
-          variant={"outline"}
-          color={"orange.400"}
-          borderColor={"orange.400"}
-          _hover={{ bg: "orange.400", color: "white" }}
+      <Flex justify={"space-between"} align={"flex-end"}>
+        {data[0]?.response_file ? (
+          <Text
+            variant={"link"}
+            as={"a"}
+            href={`${IMG_URL}/${data[0]?.response_file}`}
+            fontSize={scssVariables.fonts.parag}
+            target="_blank"
+            textDecoration={"underline"}
+            color={"blue.400"}
+            display={"flex"}
+            alignItems={"center"}
+            gap={"5px"}
+          >
+            <Eye
+              color={scssVariables.link}
+              cursor={"pointer"}
+              width={"16px"}
+              height={"16px"}
+            />
+            Жавоб хатини кўриш
+          </Text>
+        ) : (
+          <Text fontSize={scssVariables.fonts.parag} color={"grey"}>
+            Жавоб хати йўқ
+          </Text>
+        )}
+        <Flex
+          gap={"10px"}
+          flexDirection={{ base: "column", sm: "column", md: "row", xl: "row" }}
+          justify={"flex-end"}
         >
-          PDF юклаш
-        </Button>
-        <Button
-          h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
-          leftIcon={<PenTool width={"16px"} height={"16px"} />}
-          fontSize={scssVariables.fonts.parag}
-          onClick={onOpen}
-          fontWeight={400}
-          variant={"outline"}
-          color={"green.400"}
-          borderColor={"green.400"}
-          _hover={{ bg: "green.400", color: "white" }}
-        >
-          Ўзгартириш тарихи
-        </Button>
+          <Box>
+            <FormControl isDisabled={loading}>
+              <FormLabel
+                userSelect={"none"}
+                fontSize={scssVariables.fonts.parag}
+                fontWeight={400}
+                m={0}
+                h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
+                color={"grey"}
+                border={"1px solid grey"}
+                borderRadius={"5px"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+                gap={"8px"}
+                p={{ base: "10px", sm: "10px", md: "16px", xl: "16px" }}
+                cursor={"pointer"}
+                _hover={{ bg: "grey", color: "white" }}
+              >
+                {loading ? (
+                  <Spinner color="grey" w={"16px"} h={"16px"} />
+                ) : (
+                  <Send width={"16px"} height={"16px"} />
+                )}
+                Жаъвоб хати юклаш
+              </FormLabel>
+              <Input
+                type="file"
+                sx={{ display: "none" }}
+                onChange={uploadResponse}
+              />
+            </FormControl>
+          </Box>
+          <Button
+            isDisabled={loading}
+            h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
+            leftIcon={<Download width={"16px"} height={"16px"} />}
+            fontSize={scssVariables.fonts.parag}
+            onClick={wordDownload}
+            fontWeight={400}
+            variant={"outline"}
+            color={"orange.400"}
+            borderColor={"orange.400"}
+            _hover={{ bg: "orange.400", color: "white" }}
+          >
+            PDF юклаш
+          </Button>
+          <Button
+            isDisabled={loading}
+            h={{ base: "30px", sm: "30px", md: "35px", xl: "35px" }}
+            leftIcon={<PenTool width={"16px"} height={"16px"} />}
+            fontSize={scssVariables.fonts.parag}
+            onClick={onOpen}
+            fontWeight={400}
+            variant={"outline"}
+            color={"green.400"}
+            borderColor={"green.400"}
+            _hover={{ bg: "green.400", color: "white" }}
+          >
+            Ўзгартириш тарихи
+          </Button>
+        </Flex>
       </Flex>
       {/* CONTENT */}
       <iframe ref={iframeRef} style={{ display: "none" }}></iframe>
@@ -181,6 +274,11 @@ export const Itempage: FC = () => {
                 <td>4</td>
                 <td>Murojaat javobi</td>
                 <td>{data[0]?.response || "Маълумот йўқ"}</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Murojaatning yakuniy javob matni</td>
+                <td>{data[0]?.response_story || "Маълумот йўқ"}</td>
               </tr>
             </tbody>
           </table>
