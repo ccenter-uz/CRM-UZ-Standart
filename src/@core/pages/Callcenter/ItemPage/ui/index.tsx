@@ -98,7 +98,6 @@ export const Itempage: FC = () => {
   };
 
   // UPLOAD RESPONSE
-
   const uploadResponse = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files as FileList;
     if (file[0]) {
@@ -275,6 +274,11 @@ export const Itempage: FC = () => {
                 <td>4</td>
                 <td>Murojaat javobi</td>
                 <td>{data[0]?.response || "Маълумот йўқ"}</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Murojaatning yakuniy javob matni</td>
+                <td>{data[0]?.response_story || "Маълумот йўқ"}</td>
               </tr>
             </tbody>
           </table>

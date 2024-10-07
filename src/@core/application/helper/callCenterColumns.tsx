@@ -228,4 +228,13 @@ export const callcenterColumns = [
       return t === GlobalVars.NullString ? "" : t;
     },
   },
+  {
+    title: "Мурожаатнинг якуний жавоб матни",
+    dataIndex: "response_story",
+    key: "response_story",
+    align: "center",
+    render: (t: string) => {
+      return t === GlobalVars.NullString ? "" : t;
+    },
+  },
 ];
