@@ -275,6 +275,7 @@ export const Leaverequest = () => {
 
         res?.data.map((item: any) => {
           return reset({
+            response_story: item?.response_story,
             operator_number: item?.operator_number,
             gender: item?.gender,
             additional_phone: item?.additional_phone,
@@ -335,6 +336,7 @@ export const Leaverequest = () => {
         status: "Янги",
         email: "",
         income_date: new Date(),
+        response_story: "",
 
         organization_name: "",
         performer: "",
@@ -708,6 +710,12 @@ export const Leaverequest = () => {
                 </Select>
               </FormControl>
             ) : null}
+            <FormControl>
+              <FormLabel htmlFor="response_story" sx={labelStyle}>
+                Мурожаатнинг якуний жавоб матни
+              </FormLabel>
+              <Textarea id="response_story" {...register("response_story")} />
+            </FormControl>
             {role === "admin" ? (
               <FormControl>
                 <FormLabel htmlFor="status" sx={labelStyle}>
