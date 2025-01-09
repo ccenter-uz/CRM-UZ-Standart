@@ -127,9 +127,11 @@ export const Requests: FC = () => {
       values.subCategoryId || GlobalVars.NullString
     }&${globalVars.application_type}=${
       values.application_type || GlobalVars.NullString
-    }&${globalVars.date_from}=${values.date_from || GlobalVars.NullString}&${
-      globalVars.date_to
-    }=${values.date_to || GlobalVars.NullString}`;
+    }&${globalVars.fromYear}=${values.fromYear || GlobalVars.NullString}&${
+      globalVars.date_from
+    }=${values.date_from || GlobalVars.NullString}&${globalVars.date_to}=${
+      values.date_to || GlobalVars.NullString
+    }`;
 
     router.push(query);
   };
@@ -158,6 +160,8 @@ export const Requests: FC = () => {
         params.get(`${globalVars.subCategoryId}`) || GlobalVars.NullString
       }&${globalVars.application_type}=${
         params.get(`${globalVars.application_type}`) || GlobalVars.NullString
+      }&${globalVars.fromYear}=${
+        params.get(globalVars.fromYear) || GlobalVars.NullString
       }&${globalVars.date_from}=${
         params.get(`${globalVars.date_from}`) || GlobalVars.NullString
       }&${globalVars.date_to}=${
@@ -187,6 +191,8 @@ export const Requests: FC = () => {
         globalVars.application_type
       }=${
         params.get(`${globalVars.application_type}`) || GlobalVars.NullString
+      }&${globalVars.fromYear}=${
+        params.get(globalVars.fromYear) || GlobalVars.NullString
       }&${globalVars.date_from}=${
         params.get(`${globalVars.date_from}`) || GlobalVars.NullString
       }&${globalVars.date_to}=${
@@ -223,7 +229,7 @@ export const Requests: FC = () => {
             color={scssVariables.textGreyColor}
             fontSize={{ base: "18px", sm: "18px", md: "24px", xl: "24px" }}
           >
-            Мурожаатлар руйхати: Колл-центр
+            {params.get("from_year")} - Мурожаатлар руйхати: Колл-центр
           </Text>
           <Button
             leftIcon={
