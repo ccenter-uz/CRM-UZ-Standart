@@ -8,10 +8,11 @@ import Select, { StylesConfig } from "react-select";
 interface AutocompleteSelectProps {
   name: string;
   control: Control;
-  options: { value: string | number | null; label: string }[];
+  options: { value: string | number | null; label: string | number }[];
   placeholder?: string;
   onChange?: (value: any) => void;
   required?: boolean;
+  allowClear?: boolean;
 }
 
 const customStyles: StylesConfig<any, false> = {
@@ -88,6 +89,7 @@ const AutocompleteSelect: FC<AutocompleteSelectProps> = ({
   placeholder,
   onChange,
   required,
+  allowClear,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -104,6 +106,7 @@ const AutocompleteSelect: FC<AutocompleteSelectProps> = ({
         render={({ field }) => (
           <Select
             {...field}
+            isClearable={allowClear}
             styles={customStyles}
             options={options}
             value={

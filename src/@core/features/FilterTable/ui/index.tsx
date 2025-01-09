@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { buttonStyle, inputStyle, labelStyle } from "../model/helper";
 import { useGlobal } from "@/@core/application/store/global";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   applicationTypeList,
   responseList,
@@ -20,12 +20,29 @@ import {
 import AutocompleteSelect from "@/@core/shared/ui/Autocomplete";
 import InputMask from "react-input-mask";
 import { GlobalVars } from "@/@core/shared/vars";
+import dayjs from "dayjs";
 
 type Props = {
   handleFinish: (data: any) => void;
   handleChangeRegion: (data: any) => void;
 };
 
+const calculateYearsFrom2024 = (): {
+  label: string | number;
+  value: number;
+}[] => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+  for (let year = 2024; year <= currentYear; year++) {
+    years.push(year);
+  }
+  const optionsYear = years.map((item) => ({
+    label: item,
+    value: item,
+  }));
+
+  return optionsYear;
+};
 export const FilterTable: FC<Props> = (props) => {
   const { handleFinish, handleChangeRegion } = props;
   const params = useSearchParams();
@@ -40,8 +57,14 @@ export const FilterTable: FC<Props> = (props) => {
     getDistrict,
   } = useGlobal();
   const { handleSubmit, register, reset, control } = useForm();
+  const [year, setYear] = useState<number | null>(
+    Number(params.get("from_year")) || dayjs().year()
+  );
   const router = useRouter();
 
+  const handleChangeYear = (value: { value: number } | null) => {
+    if (value) setYear(value.value);
+  };
   // CLEAR
   const handleClear = async () => {
     setPodrazdel([]);
@@ -54,39 +77,90 @@ export const FilterTable: FC<Props> = (props) => {
       district: GlobalVars.NullString,
       region: GlobalVars.NullString,
       subCategoryId: GlobalVars.NullString,
-      date_from: GlobalVars.NullString,
-      date_to: GlobalVars.NullString,
+      from_year: dayjs().year(),
+      date_from: dayjs()
+        .date(1)
+        .month(0)
+        .year(dayjs().year() as number)
+        .format("YYYY-MM-DD"),
+      date_to: dayjs()
+        .date(31)
+        .month(11)
+        .year(dayjs().year() as number)
+        .format("YYYY-MM-DD"),
       response: GlobalVars.NullString,
       operators: GlobalVars.NullString,
       applicant: "",
       application_type: GlobalVars.NullString,
     });
     await Promise.all([getPodrazdel(), getDistrict()]);
-    router.push(`?page=1&pageSize=10`);
+    router.push(
+      `?page=1&pageSize=10&operators=null&applicant=null&response=null&income_number=null&region=null&district=null&subCategoryId=null&from_year=${dayjs().year()}&date_from=${dayjs()
+        .date(1)
+        .month(0)
+        .year(dayjs().year() as number)
+        .format("YYYY-MM-DD")}&date_to=${dayjs()
+        .date(31)
+        .month(11)
+        .year(dayjs().year() as number)
+        .format("YYYY-MM-DD")}`
+    );
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      reset({
-        status: params.get("status") || GlobalVars.NullString,
-        phone: params.get("phone") || "",
-        applicant_birthday: params.get("applicant_birthday") || "",
-        applicant: params.get("applicant") || "",
-        operators: params.get("operators") || GlobalVars.NullString,
-        response: params.get("response") || GlobalVars.NullString,
-        income_number:
-          params.get("income_number") === GlobalVars.NullString
-            ? ""
-            : params.get("income_number"),
-        region: params.get("region") || GlobalVars.NullString,
-        district: params.get("district") || GlobalVars.NullString,
-        subCategoryId: params.get("subCategoryId") || GlobalVars.NullString,
-        application_type:
-          params.get("application_type") || GlobalVars.NullString,
-        date_from: params.get("date_from") || GlobalVars.NullString,
-        date_to: params.get("date_to") || GlobalVars.NullString,
-      });
-    }, 1000);
+    reset({
+      status: params.get("status") || GlobalVars.NullString,
+      phone: params.get("phone") || "",
+      applicant_birthday: params.get("applicant_birthday") || "",
+      applicant: params.get("applicant") || "",
+      operators: params.get("operators") || GlobalVars.NullString,
+      response: params.get("response") || GlobalVars.NullString,
+      income_number:
+        params.get("income_number") === GlobalVars.NullString
+          ? ""
+          : params.get("income_number"),
+      region: params.get("region") || GlobalVars.NullString,
+      district: params.get("district") || GlobalVars.NullString,
+      subCategoryId: params.get("subCategoryId") || GlobalVars.NullString,
+      application_type: params.get("application_type") || GlobalVars.NullString,
+      from_year: year,
+      date_from: dayjs()
+        .date(1)
+        .month(0)
+        .year(year as number)
+        .format("YYYY-MM-DD"),
+      date_to: dayjs()
+        .date(31)
+        .month(11)
+        .year(year as number)
+        .format("YYYY-MM-DD"),
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [year]);
+
+  useEffect(() => {
+    router.push(
+      `?page=${params.get("page") || 1}&pageSize=${
+        params.get("pageSize") || 10
+      }&applicant=${params.get("applicant")}&operators=${params.get(
+        "operators"
+      )}&response=${params.get("response")}&income_number=${params.get(
+        "income_number"
+      )}&region=${params.get("region")}&district=${params.get(
+        "district"
+      )}&subCategoryId=${params.get(
+        "subCategoryId"
+      )}&from_year=${year}&date_from=${dayjs()
+        .date(1)
+        .month(0)
+        .year(year as number)
+        .format("YYYY-MM-DD")}&date_to=${dayjs()
+        .date(31)
+        .month(11)
+        .year(year as number)
+        .format("YYYY-MM-DD")}`
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -257,6 +331,18 @@ export const FilterTable: FC<Props> = (props) => {
                 label: field.label,
               })),
             ]}
+          />
+        </FormControl>
+        <FormControl>
+          <FormLabel htmlFor="from_year" sx={labelStyle}>
+            Йил бўйича:
+          </FormLabel>
+          <AutocompleteSelect
+            name="from_year"
+            control={control}
+            options={calculateYearsFrom2024()}
+            onChange={handleChangeYear}
+            allowClear
           />
         </FormControl>
         <FormControl>
